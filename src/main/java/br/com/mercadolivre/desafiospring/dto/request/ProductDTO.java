@@ -28,7 +28,4 @@ public class ProductDTO {
                  a.getPrestige()
          )).collect(Collectors.toList());
      }
-
-
-
 }
