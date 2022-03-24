@@ -29,11 +29,10 @@ public class ProductController {
     }
 
     @GetMapping("articles")
-    public List<Product> retrieveSortedProducts(@RequestParam("order") Optional<Integer> orderStrategy) throws IOException {
+    public List<Product> retrieveProducts(@RequestParam("order") Optional<Integer> orderStrategy) throws IOException {
         if (orderStrategy.isPresent()) {
             return productService.sortProducts(orderStrategy.get());
         }
-        // depends on #7
-        return new ArrayList<>();
+        return productService.getProducts();
     }
 }

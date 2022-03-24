@@ -39,4 +39,10 @@ public class ProductService {
                 return products;
        }
     }
+
+    public List<Product> getProducts() throws IOException {
+        List<Product> products = repo.read();
+
+        return products;
+    }
 }
