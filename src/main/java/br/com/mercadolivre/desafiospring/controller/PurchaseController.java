@@ -1,6 +1,8 @@
 package br.com.mercadolivre.desafiospring.controller;
 
+
 import br.com.mercadolivre.desafiospring.dto.request.PurchaseDTO;
+import br.com.mercadolivre.desafiospring.dto.request.PurchaseRequestDTO;
 import br.com.mercadolivre.desafiospring.models.Purchase;
 import br.com.mercadolivre.desafiospring.services.PurchaseService;
 import lombok.AllArgsConstructor;
@@ -11,20 +13,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/purchase-request")
 @AllArgsConstructor
 public class PurchaseController {
 
-    final private PurchaseService purchaseservice;
+    final private PurchaseService purchaseService;
 
-
-//    public List<Purchase> purchaseRequest(@RequestBody PurchaseDTO purchase) throws IOException {
-//        return purchaseservice.addPurchase(purchase.dtoToModel());
-//    }
     @PostMapping
-    public String purchaseRequest(){
-        return "Purchase is ok ";
+    public List<PurchaseDTO> purchaseRequest(@RequestBody PurchaseRequestDTO purchase) throws IOException {
+        List<Purchase> requestFromPurchases = purchaseService.addPurchaseFromRequest(purchase.dtoToModel());
+
+        return requestFromPurchases.stream().map(r -> new PurchaseDTO(r)).collect(Collectors.toList());
+
     }
+
 }
