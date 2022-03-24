@@ -26,15 +26,17 @@ public class ProductService {
 
         List<Product> products = repo.read();
 
-        if (sortStrategy == 0) {
-            return new AlphabeticalSort().sortAsc(products);
-        } else if (sortStrategy == 1) {
-            return new AlphabeticalSort().sortDesc(products);
-        } else if (sortStrategy == 2) {
-            return new PriceSort().sortAsc(products);
-        } else if (sortStrategy == 3) {
-            return new PriceSort().sortDesc(products);
-        }
-        return products;
+        switch (sortStrategy) {
+            case 0:
+                return new AlphabeticalSort().sortAsc(products);
+            case 1:
+                return new AlphabeticalSort().sortDesc(products);
+            case 2:
+                return new PriceSort().sortDesc(products);
+            case 3:
+                return new PriceSort().sortAsc(products);
+            default:
+                return products;
+       }
     }
 }
