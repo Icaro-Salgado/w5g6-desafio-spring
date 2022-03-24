@@ -3,6 +3,7 @@ package br.com.mercadolivre.desafiospring.services;
 import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.repository.ApplicationRepository;
 import br.com.mercadolivre.desafiospring.strategies.AlphabeticalSort;
+import br.com.mercadolivre.desafiospring.strategies.PriceSort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,10 @@ public class ProductService {
             return new AlphabeticalSort().sortAsc(products);
         } else if (sortStrategy == 1) {
             return new AlphabeticalSort().sortDesc(products);
+        } else if (sortStrategy == 2) {
+            return new PriceSort().sortAsc(products);
+        } else if (sortStrategy == 3) {
+            return new PriceSort().sortDesc(products);
         }
         return products;
     }
