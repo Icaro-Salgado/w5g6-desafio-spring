@@ -49,6 +49,7 @@ public class ProductService {
         List<Product> products = repo.read();
 
         return products;
+    }
 
     public List<Product> filterByCategory(String category) throws IOException {
         List<Product> products = repo.read();
