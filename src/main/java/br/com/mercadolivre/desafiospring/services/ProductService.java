@@ -5,6 +5,7 @@ import br.com.mercadolivre.desafiospring.repository.ApplicationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -13,12 +14,8 @@ public class ProductService {
 
     private final ApplicationRepository<Product, Long> repo;
 
-    private void addProduct(Product product) {
-       repo.add(product);
-    }
-
-    public List<Product> addProducts(List<Product> products) {
-        products.forEach(this::addProduct);
+    public List<Product> addProducts(List<Product> products) throws IOException {
+        repo.add(products);
 
         return products;
     }
