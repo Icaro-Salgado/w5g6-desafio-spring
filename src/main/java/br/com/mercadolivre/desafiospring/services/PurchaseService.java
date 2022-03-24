@@ -26,7 +26,7 @@ public class PurchaseService {
     }
 
     public List<Purchase> addPurchaseFromRequest(List<PurchaseRequest> purchaserequest) throws IOException {
-
+//TODO: transformar em classe de conversão
         List<Purchase> newpurchases = purchaserequest.stream().map(p ->
                 new Purchase(0L,0,p.getProducts(),new BigDecimal(0))
         ).collect(Collectors.toList());
