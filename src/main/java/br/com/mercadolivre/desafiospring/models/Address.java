@@ -2,10 +2,14 @@ package br.com.mercadolivre.desafiospring.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
-public class Address {
+@NoArgsConstructor
+public class Address implements Serializable {
 
     private String street;
     private String neighborhood;

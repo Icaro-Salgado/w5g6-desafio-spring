@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Customer 1",
+    "email": "email@email.com",
+    "address": {
+      "street": "street name",
+      "neighborhood": "Some neighborhood",
+      "uf": "SP",
+      "country": "Brazil",
+      "zipcode": "1234567890"
+    }
+  },
+  {
+    "id": 2,
+    "name": "Customer 2",
+    "email": "email2@email.com",
+    "address": {
+      "street": "street name",
+      "neighborhood": "Some neighborhood",
+      "uf": "RJ",
+      "country": "Brazil",
+      "zipcode": "1234567890"
+    }
+  },
+  {
+    "id": 3,
+    "name": "client to save",
+    "email": "client@tosave.com",
+    "address": {
+      "street": "street 1",
+      "neighborhood": "Neigh 1",
+      "uf": "SC",
+      "country": "Brazil",
+      "zipcode": "0123456789"
+    }
+  }
+]
