@@ -2,10 +2,14 @@ package br.com.mercadolivre.desafiospring.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
-public class Client {
+@NoArgsConstructor
+public class Client implements Serializable {
     private Long id;
     private String name;
     private String email;
@@ -15,5 +19,13 @@ public class Client {
         this.name = name;
         this.email = email;
         this.address = address;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Client)){
+            return false;
+        }
+        return email.equals(((Client) obj).email);
     }
 }

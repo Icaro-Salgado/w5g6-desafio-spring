@@ -15,7 +15,10 @@ public class ClientService {
 
     public List<Client> addClients(List<Client> clients) throws IOException {
         repo.add(clients);
-
         return clients;
+    }
+
+    public List<Client> listClients() throws IOException {
+        return repo.read();
     }
 }

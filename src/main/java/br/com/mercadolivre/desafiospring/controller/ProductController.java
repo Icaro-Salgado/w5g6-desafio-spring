@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/")
@@ -34,5 +35,11 @@ public class ProductController {
             return productService.sortProducts(orderStrategy.get());
         }
         return productService.getProducts();
+    }
+
+    @GetMapping("category")
+    public List<Product> retrieveFilterByCategory(@RequestParam String category) throws IOException {
+
+        return productService.filterByCategory(category);
     }
 }

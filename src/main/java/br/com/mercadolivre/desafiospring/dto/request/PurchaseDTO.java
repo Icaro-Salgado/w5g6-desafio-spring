@@ -1,27 +1,47 @@
 package br.com.mercadolivre.desafiospring.dto.request;
 
+import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.models.Purchase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
+
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class PurchaseDTO {
 
-    private List<Purchase> purchases;
+    //TODO : transformar isso em uma lista de Products
+    private List<Product> purchases;
+
+    private Long purchaseId;
+    private int clientId;
+    private BigDecimal totalPrice;
 
     public List<Purchase> dtoToModel(){
 
-        return purchases.stream().map(p -> new Purchase(
-                p.getPurchaseId(),
-                p.getClientId(),
-                p.getProducts(),
-                p.getTotalPrice()
-        )).collect(Collectors.toList());
+        List<Purchase> newPurcheases = new ArrayList<Purchase>();
+        newPurcheases.add(
+                new Purchase(
+                        this.purchaseId,
+                        this.clientId,
+                        this.purchases,
+                        this.totalPrice
+                )
+        );
+        return newPurcheases;
+
+    }
+    public PurchaseDTO (Purchase purchase){
+        this.purchaseId = purchase.getPurchaseId();
+        this.clientId   = purchase.getClientId();
+        this.totalPrice = purchase.getTotalPrice();
+        this.purchases = purchase.getProducts();
     }
 }
