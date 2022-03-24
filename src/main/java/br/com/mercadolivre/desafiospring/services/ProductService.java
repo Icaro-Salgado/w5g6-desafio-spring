@@ -2,8 +2,7 @@ package br.com.mercadolivre.desafiospring.services;
 
 import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.repository.ApplicationRepository;
-import br.com.mercadolivre.desafiospring.strategies.AlphabeticalOrdering;
-import br.com.mercadolivre.desafiospring.strategies.OrderingStrategy;
+import br.com.mercadolivre.desafiospring.strategies.AlphabeticalSort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +21,18 @@ public class ProductService {
         return products;
     }
 
-    public List<Product> retrieveOrderedProducts(int orderStrategy) throws IOException {
+    public List<Product> readAllProducts() throws IOException {
+        return repo.read();
+    }
+
+    public List<Product> sortProducts(int sortStrategy) throws IOException {
 
         List<Product> products = repo.read();
 
-        if (orderStrategy == 0) {
-            return new AlphabeticalOrdering().sortAsc(products);
-        } else if (orderStrategy == 1) {
-            return new AlphabeticalOrdering().sortDesc(products);
+        if (sortStrategy == 0) {
+            return new AlphabeticalSort().sortAsc(products);
+        } else if (sortStrategy == 1) {
+            return new AlphabeticalSort().sortDesc(products);
         }
         return products;
     }
