@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,8 @@ public class ProductController {
     final private ProductService productService;
 
     @PostMapping
-    public List<Product> InsertProducts(@RequestBody ProductDTO product){
+    public List<Product> InsertProducts(@RequestBody ProductDTO product) throws IOException {
         return productService.addProducts(product.dtoToModel());
     }
+
 }
