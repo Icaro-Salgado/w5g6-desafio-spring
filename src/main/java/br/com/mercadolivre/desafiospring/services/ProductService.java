@@ -21,7 +21,7 @@ public class ProductService {
         return products;
     }
 
-    public List<Product> sortProducts(int sortStrategy) throws IOException {
+    public List<Product> sortProducts(Integer sortStrategy) throws IOException {
 
         List<Product> products = repo.read();
 
