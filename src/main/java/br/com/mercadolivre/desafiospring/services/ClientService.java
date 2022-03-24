@@ -1,5 +1,6 @@
 package br.com.mercadolivre.desafiospring.services;
 
+import br.com.mercadolivre.desafiospring.models.Client;
 import br.com.mercadolivre.desafiospring.repository.ApplicationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,12 +11,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ClientService {
-    // TODO: Trocar object por Service quando o model for criado
-    private final ApplicationRepository<Object, Long> repo;
+    private final ApplicationRepository<Client, Long> repo;
 
-    public List<Object> addClients(List<Object> services) throws IOException {
-        repo.add(services);
+    public List<Client> addClients(List<Client> clients) throws IOException {
+        repo.add(clients);
 
-        return services;
+        return clients;
     }
 }
