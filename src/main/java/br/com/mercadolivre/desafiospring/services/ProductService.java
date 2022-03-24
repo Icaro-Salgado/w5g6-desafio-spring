@@ -44,12 +44,17 @@ public class ProductService {
        }
     }
 
+
+    public List<Product> getProducts() throws IOException {
+        List<Product> products = repo.read();
+
+        return products;
+
     public List<Product> filterByCategory(String category) throws IOException {
         List<Product> products = repo.read();
 
         return products.stream()
                 .filter(cat -> cat.getCategory().equals(category))
                 .collect(Collectors.toList());
-        
     }
 }
