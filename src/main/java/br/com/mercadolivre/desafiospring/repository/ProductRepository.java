@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -40,6 +37,11 @@ public class ProductRepository implements ApplicationRepository<Product, Long> {
         products.addAll(newProducts);
 
         fileManager.writeIntoFile(filename, products);
+    }
+
+    @Override
+    public List<Product> findBy(Map<String, Object> filters) throws IOException, NoSuchMethodException {
+        return null;
     }
 
 }
