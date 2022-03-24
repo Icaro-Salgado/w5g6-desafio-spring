@@ -7,8 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -24,7 +26,7 @@ public class ProductRepository implements ApplicationRepository<Product, Long> {
         if (products.length == 0) {
             return new ArrayList<>();
         }
-        return List.of(products);
+        return Arrays.stream(products).collect(Collectors.toList());
     }
 
     @Override
