@@ -24,7 +24,7 @@ public class ProductController {
 
     final private ProductService productService;
 
-    @PostMapping
+    @PostMapping("insert-articles-request/")
     public List<Product> InsertProducts(@RequestBody ProductDTO product) throws IOException {
         return productService.addProducts(product.dtoToModel());
     }
