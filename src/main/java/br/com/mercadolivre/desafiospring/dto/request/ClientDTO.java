@@ -13,31 +13,14 @@ public class ClientDTO {
     private AddressDTO address;
 
     public Client dtoToModel(){
-        Address addressModel = new Address(
-                address.getStreet(),
-                address.getNeighborhood(),
-                address.getUf(),
-                address.getCountry(),
-                address.getZipcode()
-        );
-
-        return new Client(name, email, addressModel);
+        return new Client(name, email, address.dtoToModel());
     }
 
     public static ClientDTO modelToDTO(Client client){
-        Address modelAddress = client.getAddress();
-        AddressDTO addressDTO = new AddressDTO(
-                modelAddress.getStreet(),
-                modelAddress.getNeighborhood(),
-                modelAddress.getUf(),
-                modelAddress.getCountry(),
-                modelAddress.getZipcode()
-        );
-
         return new ClientDTO(
                 client.getName(),
                 client.getEmail(),
-                addressDTO
+                AddressDTO.modelToDTO(client.getAddress())
         );
     }
 }
