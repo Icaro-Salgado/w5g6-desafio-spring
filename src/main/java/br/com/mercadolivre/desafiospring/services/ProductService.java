@@ -62,7 +62,7 @@ public class ProductService {
         return products;
     }
 
-    public List<Product> filterBy(Map<String, Object> search) throws DataBaseReadException , NoSuchMethodException {
+    public List<Product> filterBy(Map<String, Object> search) throws DataBaseReadException, NoSuchMethodException {
         Object order;
         List<Product> products;
 
