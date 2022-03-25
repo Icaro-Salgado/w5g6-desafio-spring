@@ -1,14 +1,24 @@
 package br.com.mercadolivre.desafiospring.services;
 
+import br.com.mercadolivre.desafiospring.dto.response.AddressErrorDTO;
+import br.com.mercadolivre.desafiospring.dto.response.CustomerErrorDTO;
+import br.com.mercadolivre.desafiospring.dto.response.ErrorDTO;
+import br.com.mercadolivre.desafiospring.exceptions.InvalidBodyContentException;
 import br.com.mercadolivre.desafiospring.exceptions.db.DBEntryAlreadyExists;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseReadException;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
 import br.com.mercadolivre.desafiospring.models.Customer;
 import br.com.mercadolivre.desafiospring.repository.ApplicationRepository;
+import br.com.mercadolivre.desafiospring.validators.AddressValidator;
+import br.com.mercadolivre.desafiospring.validators.CustomerValidator;
+import br.com.mercadolivre.desafiospring.validators.ValidatorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.Map;
 
 @Service
@@ -16,9 +26,36 @@ import java.util.Map;
 public class CustomerService {
     private final ApplicationRepository<Customer, Long> repo;
 
+
+    public Customer findByID(Long id) {
+        Optional<Customer> optionalCustomer = repo.find(id);
+
+        if(optionalCustomer.isEmpty()){
+            return null;
+        }
+
+        return optionalCustomer.get();
+    }
+
     public List<Customer> addClients(List<Customer> customers) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists {
-        repo.add(customers);
-        return customers;
+
+        List<ErrorDTO> customerErrors = customers.stream().map(c -> {
+            ErrorDTO customerError = ValidatorService.validateObject(CustomerValidator.class, c, new CustomerErrorDTO());
+            ErrorDTO addressError = ValidatorService.validateObject(AddressValidator.class, c.getAddress(), new AddressErrorDTO());
+
+            if(customerError != null && addressError != null){
+                customerError.pushMessage(addressError.getErrors());
+            }
+            return customerError;
+
+        }).filter(Objects::nonNull).collect(Collectors.toList());
+
+
+        if(!customerErrors.isEmpty()){
+            throw new InvalidBodyContentException(customerErrors);
+        }
+
+        return repo.add(customers);
     }
 
     public List<Customer> listClients() throws DataBaseReadException {

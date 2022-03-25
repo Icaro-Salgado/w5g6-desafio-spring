@@ -35,12 +35,13 @@ public class PurchaseRepository implements ApplicationRepository<Purchase, Long>
     }
 
     @Override
-    public void add(List<Purchase> listToAdd) throws DataBaseReadException, DataBaseWriteException {
+    public List<Purchase> add(List<Purchase> listToAdd) throws DataBaseReadException, DataBaseWriteException {
         List<Purchase> purchases = read();
 
         purchases.addAll(listToAdd);
 
-        fileManager.writeIntoFile(filename, purchases);
+        fileManager.writeIntoFile(filename,purchases);
+        return purchases;
     }
 
     @Override
