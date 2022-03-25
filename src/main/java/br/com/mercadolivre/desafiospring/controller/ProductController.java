@@ -9,6 +9,7 @@ import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
 import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.services.ProductService;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,27 +40,11 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(productsCreatedDTO);
     }
 
-    @GetMapping("articles/")
-    public ResponseEntity<List<ResponseProductDTO>> retrieveProducts(
-            @RequestParam("order") Optional<Integer> orderStrategy
-    ) throws DataBaseReadException {
-        List<Product> products;
-
-        if (orderStrategy.isPresent()) {
-            products = productService.sortProducts(orderStrategy.get());
-        } else {
-            products = productService.getProducts();
-        }
-
+    @RequestMapping(value = "articles",method = RequestMethod.GET)
+    public ResponseEntity<List<ResponseProductDTO>> findBy(@RequestParam Map<String, Object> parameters) throws DataBaseReadException, NoSuchMethodException {
+        List<Product> products = productService.filterBy(parameters);
         List<ResponseProductDTO> productsDTO = products.stream().map(ResponseProductDTO::new).collect(Collectors.toList());
 
         return ResponseEntity.ok(productsDTO);
-    }
-
-
-    @RequestMapping(method = RequestMethod.GET)
-    public List<Product> retrieveFindBy(@RequestParam Map<String, Object> parameters) throws NoSuchMethodException, DataBaseReadException {
-        return productService.filterBy(parameters);
-
     }
 }
