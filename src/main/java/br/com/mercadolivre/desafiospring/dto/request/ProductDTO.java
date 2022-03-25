@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ProductDTO {
 
-     private List <Product> products ;
+     private List <Product> products;
 
      public  List<Product> dtoToModel(){
 

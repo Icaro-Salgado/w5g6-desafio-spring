@@ -58,4 +58,8 @@ public class ProductService {
                 .filter(cat -> cat.getCategory().equals(category))
                 .collect(Collectors.toList());
     }
+
+    public Product findProduct(Long id) {
+        return repo.find(id).orElse(new Product());
+    }
 }
