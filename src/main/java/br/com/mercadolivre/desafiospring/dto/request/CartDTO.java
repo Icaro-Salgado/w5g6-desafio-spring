@@ -1,7 +1,6 @@
 package br.com.mercadolivre.desafiospring.dto.request;
 
 import br.com.mercadolivre.desafiospring.models.Product;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
