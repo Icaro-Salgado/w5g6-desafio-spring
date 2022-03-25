@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,7 +20,6 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final ApplicationRepository<Product, Long> repo;
-    List<Product> productList = new ArrayList<>();
 
     public List<Product> addProducts(List<Product> products) throws IOException {
         repo.add(products);
@@ -44,18 +45,13 @@ public class ProductService {
        }
     }
 
-
     public List<Product> getProducts() throws IOException {
         List<Product> products = repo.read();
 
         return products;
     }
 
-    public List<Product> filterByCategory(String category) throws IOException {
-        List<Product> products = repo.read();
-
-        return products.stream()
-                .filter(cat -> cat.getCategory().equals(category))
-                .collect(Collectors.toList());
+    public List<Product> filterBy(Map<String, Object> search) throws IOException, NoSuchMethodException {
+        return repo.findBy(search);
     }
 }

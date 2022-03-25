@@ -4,16 +4,14 @@ import br.com.mercadolivre.desafiospring.dto.request.ProductDTO;
 import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.services.ProductService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -37,9 +35,8 @@ public class ProductController {
         return productService.getProducts();
     }
 
-    @GetMapping("category")
-    public List<Product> retrieveFilterByCategory(@RequestParam String category) throws IOException {
-
-        return productService.filterByCategory(category);
+    @RequestMapping(method = RequestMethod.GET)
+    public List<Product> testUrl(@RequestParam Map<String, Object> parameters) throws IOException, NoSuchMethodException {
+        return productService.filterBy(parameters);
     }
 }
