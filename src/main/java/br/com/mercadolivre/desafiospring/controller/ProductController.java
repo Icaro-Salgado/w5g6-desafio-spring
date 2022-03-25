@@ -6,13 +6,16 @@ import br.com.mercadolivre.desafiospring.dto.response.ResponseProductDTO;
 import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.services.ProductService;
 import lombok.AllArgsConstructor;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -48,9 +51,10 @@ public class ProductController {
         return ResponseEntity.ok(productsDTO);
     }
 
-    @GetMapping("category/")
-    public ResponseEntity<List<Product>> retrieveFilterByCategory(@RequestParam String category) throws IOException {
 
-        return ResponseEntity.ok(productService.filterByCategory(category));
+    @RequestMapping(method = RequestMethod.GET)
+    public List<Product> retrieveFindBy(@RequestParam Map<String, Object> parameters) throws IOException, NoSuchMethodException {
+        return productService.filterBy(parameters);
+
     }
 }

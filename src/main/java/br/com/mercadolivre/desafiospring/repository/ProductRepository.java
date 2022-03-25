@@ -1,10 +1,13 @@
 package br.com.mercadolivre.desafiospring.repository;
 
 import br.com.mercadolivre.desafiospring.database.FileManager;
+import br.com.mercadolivre.desafiospring.models.Customer;
 import br.com.mercadolivre.desafiospring.models.Product;
+import br.com.mercadolivre.desafiospring.utils.ClassUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import javax.el.PropertyNotFoundException;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,6 +30,27 @@ public class ProductRepository implements ApplicationRepository<Product, Long> {
     }
 
     @Override
+    public List<Product> findBy(Map<String, Object> filters) throws IOException {
+        try{
+            List<Product> products = Arrays.asList(fileManager.readFromFile(filename, Product[].class));
+
+            for(var filter :filters.entrySet()){
+                products = products.stream()
+                        .filter(client -> {
+                            Object value = ClassUtils.invokeGetMethod(client, filter.getKey());
+                            return value.equals(filter.getValue());
+                        })
+                        .collect(Collectors.toList());
+            }
+
+            return products;
+
+        }catch (PropertyNotFoundException e){
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
     public Optional<Product> find(Long id) {
         return Optional.empty();
     }
@@ -37,11 +61,6 @@ public class ProductRepository implements ApplicationRepository<Product, Long> {
         products.addAll(newProducts);
 
         fileManager.writeIntoFile(filename, products);
-    }
-
-    @Override
-    public List<Product> findBy(Map<String, Object> filters) throws IOException, NoSuchMethodException {
-        return null;
     }
 
 }
