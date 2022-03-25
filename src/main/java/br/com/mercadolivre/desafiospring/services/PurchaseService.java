@@ -4,7 +4,7 @@ package br.com.mercadolivre.desafiospring.services;
 import br.com.mercadolivre.desafiospring.exceptions.db.DBEntryAlreadyExists;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseReadException;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
-import br.com.mercadolivre.desafiospring.exceptions.validations.ValidationException;
+import br.com.mercadolivre.desafiospring.exceptions.validations.OutOfStockException;
 import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.models.Purchase;
 import br.com.mercadolivre.desafiospring.models.PurchaseRequest;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,21 +24,22 @@ public class PurchaseService {
     final private ApplicationRepository<Purchase, Long> repo;
     final private ApplicationRepository<Product, Long> productRepo;
 
-    public void StockQuantityValidation(List<Purchase> newPurchases) throws IOException, ValidationException {
+    public void StockQuantityValidation(List<Purchase> newPurchases) throws DataBaseReadException, OutOfStockException, NoSuchMethodException {
 
         for (Purchase purchase :
                 newPurchases) {
             for (Product product :
                     purchase.getProducts()) {
-                Optional<Product> stockProduct = productRepo.find(product.getProductId());
-                if (stockProduct.isPresent() && stockProduct.get().getQuantity() < product.getQuantity()) {
-                    throw new ValidationException("Sem estoque: Há apenas "
-                            .concat(stockProduct.get().getQuantity().toString())
+                Product stockProduct = productRepo.findBy(Map.of("name", product.getName(), "brand", product.getBrand())).get(0);
+                if (stockProduct.getQuantity() < product.getQuantity()) {
+
+                    throw new OutOfStockException("Sem estoque: Há apenas "
+                            .concat(stockProduct.getQuantity().toString())
                             .concat(" unidades do produto ")
                             .concat(product.getName())
-                            .concat(" em estoque. ")
+                            .concat(" em estoque. O pedido foi de ")
                             .concat(product.getQuantity().toString())
-                            .concat("foram pedidas."));
+                            .concat("."));
                 }
             }
         }
@@ -50,9 +50,9 @@ public class PurchaseService {
         return purchase;
     }
 
-    public List<Purchase> addPurchaseFromRequest(List<PurchaseRequest> purchaserequest) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists, ValidationException {
+    public List<Purchase> addPurchaseFromRequest(List<PurchaseRequest> purchaseRequest) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists, OutOfStockException, NoSuchMethodException {
         //TODO: transformar em classe de conversão
-        List<Purchase> newpurchases = purchaserequest.stream().map(p ->
+        List<Purchase> newPurchases = purchaseRequest.stream().map(p ->
                 new Purchase(0L, 0L, p.getProducts(), new BigDecimal(0))
         ).collect(Collectors.toList());
 
