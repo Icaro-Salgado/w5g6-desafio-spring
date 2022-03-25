@@ -1,6 +1,5 @@
 package br.com.mercadolivre.desafiospring.services;
 
-import br.com.mercadolivre.desafiospring.database.FileManager;
 import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.repository.ApplicationRepository;
 import br.com.mercadolivre.desafiospring.strategies.AlphabeticalSort;
@@ -18,12 +17,19 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final ApplicationRepository<Product, Long> repo;
-    List<Product> productList = new ArrayList<>();
 
     public List<Product> addProducts(List<Product> products) throws IOException {
-        repo.add(products);
+        List<Product> existingProducts = repo.read();
+        List<Product> createdProducts = new ArrayList<>();
 
-        return products;
+        products.forEach(newProduct -> {
+            newProduct.setId(existingProducts.size() + 1L);
+            existingProducts.add(newProduct);
+            createdProducts.add(newProduct);
+        });
+
+        repo.add(existingProducts);
+        return createdProducts;
     }
 
     public List<Product> sortProducts(Integer sortStrategy) throws IOException {
