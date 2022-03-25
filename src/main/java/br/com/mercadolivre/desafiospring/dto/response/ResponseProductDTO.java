@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseProductDTO {
-    private Long productId;
+    private Long id;
     private String name;
     private Integer quantity;
 
     public ResponseProductDTO(Product product)  {
-       this.productId = product.getProductId();
+       this.id = product.getId();
        this.name = product.getName();
        this.quantity = product.getQuantity();
     }

@@ -10,6 +10,7 @@ import br.com.mercadolivre.desafiospring.strategies.PriceSort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,9 +21,17 @@ public class ProductService {
     private final ApplicationRepository<Product, Long> repo;
 
     public List<Product> addProducts(List<Product> products) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists {
-        repo.add(products);
+        List<Product> existingProducts = repo.read();
+        List<Product> createdProducts = new ArrayList<>();
 
-        return products;
+        products.forEach(newProduct -> {
+            newProduct.setId(existingProducts.size() + 1L);
+            existingProducts.add(newProduct);
+            createdProducts.add(newProduct);
+        });
+
+        repo.add(existingProducts);
+        return createdProducts;
     }
 
     public List<Product> sortProducts(Integer sortStrategy) throws DataBaseReadException {

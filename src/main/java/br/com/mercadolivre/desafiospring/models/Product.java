@@ -2,6 +2,7 @@ package br.com.mercadolivre.desafiospring.models;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,8 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
-    
-    private Long productId;
+
+    @JsonProperty("productId")
+    private Long id;
     private String name;
     private	String category;
     private String brand;
@@ -19,5 +21,5 @@ public class Product {
     private Integer	quantity;
     private Boolean freeShipping;
     private String prestige;
-    
+
 }
