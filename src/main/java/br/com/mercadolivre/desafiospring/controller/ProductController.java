@@ -3,15 +3,18 @@ package br.com.mercadolivre.desafiospring.controller;
 import br.com.mercadolivre.desafiospring.dto.request.ProductDTO;
 import br.com.mercadolivre.desafiospring.dto.response.ProductsCreatedDTO;
 import br.com.mercadolivre.desafiospring.dto.response.ResponseProductDTO;
+import br.com.mercadolivre.desafiospring.exceptions.db.DBEntryAlreadyExists;
+import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseReadException;
+import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
 import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.services.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -25,7 +28,10 @@ public class ProductController {
     final private ProductService productService;
 
     @PostMapping("insert-articles-request/")
-    public ResponseEntity<ProductsCreatedDTO> InsertProducts(@RequestBody ProductDTO product, UriComponentsBuilder uriBuilder) throws IOException {
+    public ResponseEntity<ProductsCreatedDTO> InsertProducts(
+            @RequestBody ProductDTO product, UriComponentsBuilder uriBuilder
+    ) throws DataBaseReadException, DBEntryAlreadyExists, DataBaseWriteException {
+
         List<Product> productsCreated = productService.addProducts(product.dtoToModel());
 
         List<ResponseProductDTO> productsResponseDTO = productsCreated.stream().map(ResponseProductDTO::new).collect(Collectors.toList());
@@ -40,6 +46,5 @@ public class ProductController {
         List<ResponseProductDTO> productsDTO = products.stream().map(ResponseProductDTO::new).collect(Collectors.toList());
 
         return ResponseEntity.ok(productsDTO);
-
     }
 }

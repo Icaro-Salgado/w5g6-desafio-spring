@@ -18,7 +18,7 @@ public class ProductDTO {
 
      public  List<Product> dtoToModel(){
 
-         return products.stream().map(a -> new Product(a.getProductId(),
+         return products.stream().map(a -> new Product(null,
                  a.getName(),
                  a.getCategory(),
                  a.getBrand(),
