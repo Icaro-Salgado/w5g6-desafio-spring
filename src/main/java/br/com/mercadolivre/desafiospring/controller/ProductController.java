@@ -41,7 +41,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "articles",method = RequestMethod.GET)
-    public ResponseEntity<List<ResponseProductDTO>> findBy(@RequestParam Map<String, Object> parameters) throws IOException, NoSuchMethodException {
+    public ResponseEntity<List<ResponseProductDTO>> findBy(@RequestParam Map<String, Object> parameters) throws DataBaseReadException, NoSuchMethodException {
         List<Product> products = productService.filterBy(parameters);
         List<ResponseProductDTO> productsDTO = products.stream().map(ResponseProductDTO::new).collect(Collectors.toList());
 
