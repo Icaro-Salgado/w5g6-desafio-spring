@@ -2,6 +2,7 @@ package br.com.mercadolivre.desafiospring.repository;
 
 import br.com.mercadolivre.desafiospring.database.FileManager;
 import br.com.mercadolivre.desafiospring.models.Purchase;
+import br.com.mercadolivre.desafiospring.utils.ClassUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -42,7 +43,17 @@ public class PurchaseRepository implements ApplicationRepository<Purchase, Long>
     }
 
     @Override
-    public List<Purchase> findBy(Map<String, Object> filters) throws IOException, NoSuchMethodException {
-        return null;
+    public List<Purchase> findBy(Map<String, Object> filters) throws IOException {
+            List<Purchase> purchases = Arrays.asList(fileManager.readFromFile(filename, Purchase[].class));
+
+            for(var filter :filters.entrySet()){
+                 return purchases.stream()
+                        .filter(purchase -> {
+                            Object value = ClassUtils.invokeGetMethod(purchase, filter.getKey());
+                            return value.equals(filter.getValue());
+                        })
+                        .collect(Collectors.toList());
+            }
+        return purchases;
     }
 }

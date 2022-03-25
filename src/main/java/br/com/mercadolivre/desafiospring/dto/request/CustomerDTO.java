@@ -4,6 +4,9 @@ import br.com.mercadolivre.desafiospring.models.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Data
 @AllArgsConstructor
 public class CustomerDTO {
@@ -13,6 +16,10 @@ public class CustomerDTO {
 
     public Customer dtoToModel(){
         return new Customer(name, email, address.dtoToModel());
+    }
+
+    public static List<CustomerDTO> modelToDTO(List<Customer> modelCustomers){
+        return modelCustomers.stream().map(CustomerDTO::modelToDTO).collect(Collectors.toList());
     }
 
     public static CustomerDTO modelToDTO(Customer customer){

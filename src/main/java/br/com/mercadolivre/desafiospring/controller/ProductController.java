@@ -1,15 +1,19 @@
 package br.com.mercadolivre.desafiospring.controller;
 
 import br.com.mercadolivre.desafiospring.dto.request.ProductDTO;
+import br.com.mercadolivre.desafiospring.dto.response.ProductsCreatedDTO;
+import br.com.mercadolivre.desafiospring.dto.response.ResponseProductDTO;
 import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.services.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,20 +27,34 @@ public class ProductController {
     final private ProductService productService;
 
     @PostMapping("insert-articles-request/")
-    public List<Product> InsertProducts(@RequestBody ProductDTO product) throws IOException {
-        return productService.addProducts(product.dtoToModel());
+    public ResponseEntity<ProductsCreatedDTO> InsertProducts(@RequestBody ProductDTO product, UriComponentsBuilder uriBuilder) throws IOException {
+        List<Product> productsCreated = productService.addProducts(product.dtoToModel());
+
+        List<ResponseProductDTO> productsResponseDTO = productsCreated.stream().map(ResponseProductDTO::new).collect(Collectors.toList());
+        ProductsCreatedDTO productsCreatedDTO = new ProductsCreatedDTO(productsResponseDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(productsCreatedDTO);
     }
 
-    @GetMapping("articles")
-    public List<Product> retrieveProducts(@RequestParam("order") Optional<Integer> orderStrategy) throws IOException {
+    @GetMapping("articles/")
+    public ResponseEntity<List<ResponseProductDTO>> retrieveProducts(@RequestParam("order") Optional<Integer> orderStrategy) throws IOException {
+        List<Product> products;
+
         if (orderStrategy.isPresent()) {
-            return productService.sortProducts(orderStrategy.get());
+            products = productService.sortProducts(orderStrategy.get());
+        } else {
+            products = productService.getProducts();
         }
-        return productService.getProducts();
+
+        List<ResponseProductDTO> productsDTO = products.stream().map(ResponseProductDTO::new).collect(Collectors.toList());
+
+        return ResponseEntity.ok(productsDTO);
     }
+
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Product> testUrl(@RequestParam Map<String, Object> parameters) throws IOException, NoSuchMethodException {
+    public List<Product> retrieveFindBy(@RequestParam Map<String, Object> parameters) throws IOException, NoSuchMethodException {
         return productService.filterBy(parameters);
+
     }
 }

@@ -54,4 +54,8 @@ public class ProductService {
     public List<Product> filterBy(Map<String, Object> search) throws IOException, NoSuchMethodException {
         return repo.findBy(search);
     }
+
+    public Product findProduct(Long id) {
+        return repo.find(id).orElse(new Product());
+    }
 }

@@ -21,7 +21,7 @@ public class PurchaseDTO {
     private List<Product> purchases;
 
     private Long purchaseId;
-    private int customerId;
+    private Long customerId;
     private BigDecimal totalPrice;
 
     public List<Purchase> dtoToModel(){
