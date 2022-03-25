@@ -4,16 +4,15 @@ package br.com.mercadolivre.desafiospring.services;
 import br.com.mercadolivre.desafiospring.exceptions.db.DBEntryAlreadyExists;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseReadException;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
+import br.com.mercadolivre.desafiospring.exceptions.validations.ValidationException;
 import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.models.Purchase;
 import br.com.mercadolivre.desafiospring.models.PurchaseRequest;
 import br.com.mercadolivre.desafiospring.repository.ApplicationRepository;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,21 +25,24 @@ public class PurchaseService {
     final private ApplicationRepository<Purchase, Long> repo;
     final private ApplicationRepository<Product, Long> productRepo;
 
-    public Boolean validate(List<Purchase> purchases) throws DataBaseReadException {
+    public void StockQuantityValidation(List<Purchase> newPurchases) throws IOException, ValidationException {
 
-        for (Purchase purchase:
-             purchases) {
-            for (Product product:
-                 purchase.getProducts()) {
-                Optional<Product> inventory = productRepo.find(product.getProductId());
-                if (inventory.isPresent()) {
-                    if (inventory.get().getQuantity() < product.getQuantity()) {
-                        return false;
-                    }
+        for (Purchase purchase :
+                newPurchases) {
+            for (Product product :
+                    purchase.getProducts()) {
+                Optional<Product> stockProduct = productRepo.find(product.getProductId());
+                if (stockProduct.isPresent() && stockProduct.get().getQuantity() < product.getQuantity()) {
+                    throw new ValidationException("Sem estoque: Há apenas "
+                            .concat(stockProduct.get().getQuantity().toString())
+                            .concat(" unidades do produto ")
+                            .concat(product.getName())
+                            .concat(" em estoque. ")
+                            .concat(product.getQuantity().toString())
+                            .concat("foram pedidas."));
                 }
             }
         }
-        return true;
     }
 
     public List<Purchase> addPurchase(List<Purchase> purchase) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists {
@@ -48,17 +50,14 @@ public class PurchaseService {
         return purchase;
     }
 
-    public List<Purchase> addPurchaseFromRequest(List<PurchaseRequest> purchaserequest) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists {
+    public List<Purchase> addPurchaseFromRequest(List<PurchaseRequest> purchaserequest) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists, ValidationException {
         //TODO: transformar em classe de conversão
         List<Purchase> newpurchases = purchaserequest.stream().map(p ->
                 new Purchase(0L, 0L, p.getProducts(), new BigDecimal(0))
         ).collect(Collectors.toList());
 
-        // validate inventory number
-        if (!validate(newPurchases)) {
-            System.out.println("Número de itens no estoque é inferior ao requisitado.");
-            return new ArrayList<Purchase>();
-        }
+        StockQuantityValidation(newPurchases);
+
         repo.add(newPurchases);
         return newPurchases;
     }
