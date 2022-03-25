@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class ProductRepository implements ApplicationRepository<Product, Long> {
 
     private final FileManager<Product[]> fileManager;
-    private final String filename = "src/main/java/br/com/mercadolivre/desafiospring/database/products.json";
+    private final String filename = "products.json";
 
     @Override
     public List<Product> read() throws IOException {

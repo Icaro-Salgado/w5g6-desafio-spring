@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class PurchaseRepository implements ApplicationRepository<Purchase, Long>{
 
 
-    final private  String filename = "src/main/java/br/com/mercadolivre/desafiospring/database/purchases.json";
+    final private  String filename = "purchases.json";
     final private  FileManager<Purchase[]> fileManager;
 
     @Override
