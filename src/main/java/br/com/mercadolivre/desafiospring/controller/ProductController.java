@@ -34,11 +34,18 @@ public class ProductController {
     }
 
     @GetMapping("articles/")
-    public ResponseEntity<List<Product>> retrieveProducts(@RequestParam("order") Optional<Integer> orderStrategy) throws IOException {
+    public ResponseEntity<List<ResponseProductDTO>> retrieveProducts(@RequestParam("order") Optional<Integer> orderStrategy) throws IOException {
+        List<Product> products;
+
         if (orderStrategy.isPresent()) {
-            return ResponseEntity.ok(productService.sortProducts(orderStrategy.get()));
+            products = productService.sortProducts(orderStrategy.get());
+        } else {
+            products = productService.getProducts();
         }
-        return ResponseEntity.ok(productService.getProducts());
+
+        List<ResponseProductDTO> productsDTO = products.stream().map(ResponseProductDTO::new).collect(Collectors.toList());
+
+        return ResponseEntity.ok(productsDTO);
     }
 
     @GetMapping("category/")
