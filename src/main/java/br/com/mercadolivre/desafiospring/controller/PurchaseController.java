@@ -7,7 +7,9 @@ import br.com.mercadolivre.desafiospring.dto.request.PurchaseRequestDTO;
 import br.com.mercadolivre.desafiospring.models.Purchase;
 import br.com.mercadolivre.desafiospring.services.PurchaseService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -21,10 +23,10 @@ public class PurchaseController {
     final private PurchaseService purchaseService;
 
     @PostMapping
-    public List<PurchaseDTO> purchaseRequest(@RequestBody PurchaseRequestDTO purchase) throws IOException {
+    public ResponseEntity<List<PurchaseDTO>> purchaseRequest(@RequestBody PurchaseRequestDTO purchase) throws IOException {
         List<Purchase> requestFromPurchases = purchaseService.addPurchaseFromRequest(purchase.dtoToModel());
 
-        return requestFromPurchases.stream().map(PurchaseDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(requestFromPurchases.stream().map(PurchaseDTO::new).collect(Collectors.toList()));
 
     }
 
