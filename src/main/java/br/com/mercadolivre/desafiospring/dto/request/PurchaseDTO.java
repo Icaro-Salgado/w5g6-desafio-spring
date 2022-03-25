@@ -21,7 +21,7 @@ public class PurchaseDTO {
     private List<Product> purchases;
 
     private Long purchaseId;
-    private int clientId;
+    private int customerId;
     private BigDecimal totalPrice;
 
     public List<Purchase> dtoToModel(){
@@ -30,7 +30,7 @@ public class PurchaseDTO {
         newPurcheases.add(
                 new Purchase(
                         this.purchaseId,
-                        this.clientId,
+                        this.customerId,
                         this.purchases,
                         this.totalPrice
                 )
@@ -40,7 +40,7 @@ public class PurchaseDTO {
     }
     public PurchaseDTO (Purchase purchase){
         this.purchaseId = purchase.getPurchaseId();
-        this.clientId   = purchase.getClientId();
+        this.customerId = purchase.getCustomerId();
         this.totalPrice = purchase.getTotalPrice();
         this.purchases = purchase.getProducts();
     }

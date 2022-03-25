@@ -26,7 +26,7 @@ public class PurchaseController {
     public List<PurchaseDTO> purchaseRequest(@RequestBody PurchaseRequestDTO purchase) throws IOException {
         List<Purchase> requestFromPurchases = purchaseService.addPurchaseFromRequest(purchase.dtoToModel());
 
-        return requestFromPurchases.stream().map(r -> new PurchaseDTO(r)).collect(Collectors.toList());
+        return requestFromPurchases.stream().map(PurchaseDTO::new).collect(Collectors.toList());
 
     }
 

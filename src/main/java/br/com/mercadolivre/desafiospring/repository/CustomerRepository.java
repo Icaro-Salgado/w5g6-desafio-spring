@@ -1,7 +1,7 @@
 package br.com.mercadolivre.desafiospring.repository;
 
 import br.com.mercadolivre.desafiospring.database.FileManager;
-import br.com.mercadolivre.desafiospring.models.Client;
+import br.com.mercadolivre.desafiospring.models.Customer;
 import br.com.mercadolivre.desafiospring.utils.ClassUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -14,19 +14,19 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Repository
-public class ClientRepository implements ApplicationRepository<Client, Long>{
+public class CustomerRepository implements ApplicationRepository<Customer, Long>{
 
-    private final FileManager<Client[]> fileManager;
-    private final String filename = "src/main/java/br/com/mercadolivre/desafiospring/database/clients.json";
+    private final FileManager<Customer[]> fileManager;
+    private final String filename = "customers.json";
 
     @Override
-    public List<Client> read() throws IOException {
-        Client[] clients = fileManager.readFromFile(filename, Client[].class);
+    public List<Customer> read() throws IOException {
+        Customer[] customers = fileManager.readFromFile(filename, Customer[].class);
 
-        if (clients.length == 0) {
+        if (customers.length == 0) {
             return new ArrayList<>();
         }
-        return Arrays.stream(clients).collect(Collectors.toList());
+        return Arrays.stream(customers).collect(Collectors.toList());
     }
 
     /*
@@ -43,12 +43,12 @@ public class ClientRepository implements ApplicationRepository<Client, Long>{
 
      */
     @Override
-    public List<Client> findBy(Map<String, Object> filters) throws IOException, NoSuchMethodException {
+    public List<Customer> findBy(Map<String, Object> filters) throws IOException {
         try{
-            List<Client> clients = Arrays.asList(fileManager.readFromFile(filename, Client[].class));
+            List<Customer> customers = Arrays.asList(fileManager.readFromFile(filename, Customer[].class));
 
             for(var filter :filters.entrySet()){
-                clients = clients.stream()
+                customers = customers.stream()
                         .filter(client -> {
                             Object value = ClassUtils.invokeGetMethod(client, filter.getKey());
                             return value.equals(filter.getValue());
@@ -56,7 +56,7 @@ public class ClientRepository implements ApplicationRepository<Client, Long>{
                         .collect(Collectors.toList());
             }
 
-            return clients;
+            return customers;
 
         }catch (PropertyNotFoundException e){
             return new ArrayList<>();
@@ -64,11 +64,11 @@ public class ClientRepository implements ApplicationRepository<Client, Long>{
     }
 
     @Override
-    public Optional<Client> find(Long id) {
+    public Optional<Customer> find(Long id) {
         try {
-            Client[] clients = fileManager.readFromFile(filename, Client[].class);
+            Customer[] customers = fileManager.readFromFile(filename, Customer[].class);
 
-            return Arrays.stream(clients).filter(c -> c.getId().equals(id)).findFirst();
+            return Arrays.stream(customers).filter(c -> c.getId().equals(id)).findFirst();
 
         }catch (IOException e){
             return Optional.empty();
@@ -77,16 +77,16 @@ public class ClientRepository implements ApplicationRepository<Client, Long>{
     }
 
     @Override
-    public void add(List<Client> listToAdd) throws IOException {
-        List<Client> clients = read();
+    public void add(List<Customer> listToAdd) throws IOException {
+        List<Customer> customers = read();
         for(var clientToAdd: listToAdd){
-            if (clients.contains(clientToAdd)) {
+            if (customers.contains(clientToAdd)) {
                 throw new FileAlreadyExistsException("Cliente " + clientToAdd.getEmail() +  "já cadastrado na base");
             }
-            clientToAdd.setId((long) (clients.size() + 1));
-            clients.add(clientToAdd);
+            clientToAdd.setId((long) (customers.size() + 1));
+            customers.add(clientToAdd);
         }
 
-        fileManager.writeIntoFile(filename, clients);
+        fileManager.writeIntoFile(filename, customers);
     }
 }
