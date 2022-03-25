@@ -13,7 +13,7 @@ import java.util.List;
 public class Purchase {
 
     private Long purchaseId;
-    private int customerId;
+    private Long customerId;
     private List<Product> products;
     private BigDecimal totalPrice;
 }
