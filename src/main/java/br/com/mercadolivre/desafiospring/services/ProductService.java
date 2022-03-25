@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,9 +24,9 @@ public class ProductService {
         return products;
     }
 
-    public List<Product> sortProducts(Integer sortStrategy) throws IOException {
+    private List<Product> sortProducts(Integer sortStrategy, List<Product> productList) throws IOException {
 
-        List<Product> products = repo.read();
+        List<Product> products = productList;
 
         switch (sortStrategy) {
             case 0:
@@ -42,7 +39,7 @@ public class ProductService {
                 return new PriceSort().sortAsc(products);
             default:
                 return products;
-       }
+        }
     }
 
     public List<Product> getProducts() throws IOException {
@@ -52,6 +49,17 @@ public class ProductService {
     }
 
     public List<Product> filterBy(Map<String, Object> search) throws IOException, NoSuchMethodException {
+        Object order;
+        List<Product> products;
+
+        if (search.containsKey("order")) {
+            order = search.get("order");
+            search.remove("order");
+            products = repo.findBy(search);
+
+            return sortProducts(Integer.parseInt(order.toString()), products);
+        }
+
         return repo.findBy(search);
     }
 
