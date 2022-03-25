@@ -38,7 +38,7 @@ public class ProductService {
     }
 
 
-    private List<Product> sortProducts(Integer sortStrategy, List<Product> productList) throws IOException {
+    private List<Product> sortProducts(Integer sortStrategy, List<Product> productList) throws DataBaseReadException {
 
         List<Product> products = productList;
 
@@ -62,7 +62,7 @@ public class ProductService {
         return products;
     }
 
-    public List<Product> filterBy(Map<String, Object> search) throws IOException, NoSuchMethodException {
+    public List<Product> filterBy(Map<String, Object> search) throws DataBaseReadException , NoSuchMethodException {
         Object order;
         List<Product> products;
 
