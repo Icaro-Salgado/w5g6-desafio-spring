@@ -9,13 +9,13 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Client implements Serializable {
+public class Customer implements Serializable {
     private Long id;
     private String name;
     private String email;
     private Address address;
 
-    public Client(String name, String email, Address address) {
+    public Customer(String name, String email, Address address) {
         this.name = name;
         this.email = email;
         this.address = address;
@@ -23,9 +23,9 @@ public class Client implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof Client)){
+        if(!(obj instanceof Customer)){
             return false;
         }
-        return email.equals(((Client) obj).email);
+        return email.equals(((Customer) obj).email);
     }
 }
