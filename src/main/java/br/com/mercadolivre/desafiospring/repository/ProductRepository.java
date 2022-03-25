@@ -1,11 +1,14 @@
 package br.com.mercadolivre.desafiospring.repository;
 
 import br.com.mercadolivre.desafiospring.database.FileManager;
+import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseReadException;
+import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
 import br.com.mercadolivre.desafiospring.models.Product;
+import br.com.mercadolivre.desafiospring.utils.ClassUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.io.IOException;
+import javax.el.PropertyNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -17,7 +20,7 @@ public class ProductRepository implements ApplicationRepository<Product, Long> {
     private final String filename = "products.json";
 
     @Override
-    public List<Product> read() throws IOException {
+    public List<Product> read() throws DataBaseReadException {
         Product[] products = fileManager.readFromFile(filename, Product[].class);
 
         if (products.length == 0) {
@@ -27,12 +30,28 @@ public class ProductRepository implements ApplicationRepository<Product, Long> {
     }
 
     @Override
-    public Optional<Product> find(Long id) {
-        return Optional.empty();
+    public List<Product> findBy(Map<String, Object> filters) throws DataBaseReadException {
+        try {
+            List<Product> products = Arrays.asList(fileManager.readFromFile(filename, Product[].class));
+
+            for (var filter : filters.entrySet()) {
+                products = products.stream()
+                        .filter(client -> {
+                            Object value = ClassUtils.invokeGetMethod(client, filter.getKey());
+                            return value.equals(filter.getValue());
+                        })
+                        .collect(Collectors.toList());
+            }
+
+            return products;
+
+        } catch (PropertyNotFoundException e) {
+            return new ArrayList<>();
+        }
     }
 
     @Override
-    public List<Product> add(List<Product> newProducts) throws IOException {
+    public List<Product> add(List<Product> newProducts) throws DataBaseReadException, DataBaseWriteException {
         List<Product> products = read();
         products.addAll(newProducts);
 
@@ -41,8 +60,9 @@ public class ProductRepository implements ApplicationRepository<Product, Long> {
     }
 
     @Override
-    public List<Product> findBy(Map<String, Object> filters) throws IOException, NoSuchMethodException {
-        return null;
+    public Optional<Product> find(Long id) {
+        return Optional.empty();
     }
+
 
 }

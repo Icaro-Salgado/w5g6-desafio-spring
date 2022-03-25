@@ -1,26 +1,27 @@
 package br.com.mercadolivre.desafiospring.repository;
 
 import br.com.mercadolivre.desafiospring.database.FileManager;
+import br.com.mercadolivre.desafiospring.exceptions.db.DBEntryAlreadyExists;
+import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseReadException;
+import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
 import br.com.mercadolivre.desafiospring.models.Customer;
 import br.com.mercadolivre.desafiospring.utils.ClassUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.el.PropertyNotFoundException;
-import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Repository
-public class CustomerRepository implements ApplicationRepository<Customer, Long>{
+public class CustomerRepository implements ApplicationRepository<Customer, Long> {
 
     private final FileManager<Customer[]> fileManager;
     private final String filename = "customers.json";
 
     @Override
-    public List<Customer> read() throws IOException {
+    public List<Customer> read() throws DataBaseReadException {
         Customer[] customers = fileManager.readFromFile(filename, Customer[].class);
 
         if (customers.length == 0) {
@@ -43,11 +44,11 @@ public class CustomerRepository implements ApplicationRepository<Customer, Long>
 
      */
     @Override
-    public List<Customer> findBy(Map<String, Object> filters) throws IOException {
-        try{
+    public List<Customer> findBy(Map<String, Object> filters) throws DataBaseReadException {
+        try {
             List<Customer> customers = Arrays.asList(fileManager.readFromFile(filename, Customer[].class));
 
-            for(var filter :filters.entrySet()){
+            for (var filter : filters.entrySet()) {
                 customers = customers.stream()
                         .filter(client -> {
                             Object value = ClassUtils.invokeGetMethod(client, filter.getKey());
@@ -60,7 +61,7 @@ public class CustomerRepository implements ApplicationRepository<Customer, Long>
 
             return customers;
 
-        }catch (PropertyNotFoundException e){
+        } catch (PropertyNotFoundException e) {
             return new ArrayList<>();
         }
     }
@@ -72,18 +73,19 @@ public class CustomerRepository implements ApplicationRepository<Customer, Long>
 
             return Arrays.stream(customers).filter(c -> c.getId().equals(id)).findFirst();
 
-        }catch (IOException e){
+        } catch (DataBaseReadException e) {
             return Optional.empty();
         }
 
     }
 
     @Override
-    public List<Customer> add(List<Customer> listToAdd) throws IOException {
+    public List<Customer> add(List<Customer> listToAdd) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists {
         List<Customer> customers = read();
-        for(var clientToAdd: listToAdd){
+        for (var clientToAdd : listToAdd) {
             if (customers.contains(clientToAdd)) {
-                throw new FileAlreadyExistsException("Cliente " + clientToAdd.getEmail() +  " já cadastrado na base");
+
+                throw new DBEntryAlreadyExists("Cliente " + clientToAdd.getEmail() + "já cadastrado na base");
             }
             clientToAdd.setId((long) (customers.size() + 1));
             customers.add(clientToAdd);

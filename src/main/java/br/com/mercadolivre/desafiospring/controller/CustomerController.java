@@ -2,6 +2,9 @@ package br.com.mercadolivre.desafiospring.controller;
 
 import br.com.mercadolivre.desafiospring.dto.request.CustomerDTO;
 import br.com.mercadolivre.desafiospring.dto.response.CustomerCreatedDTO;
+import br.com.mercadolivre.desafiospring.exceptions.db.DBEntryAlreadyExists;
+import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseReadException;
+import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
 import br.com.mercadolivre.desafiospring.models.Customer;
 import br.com.mercadolivre.desafiospring.services.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,13 +25,13 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @GetMapping("customers/")
-    public ResponseEntity<List<CustomerDTO>> listCustomers() throws IOException {
+    public ResponseEntity<List<CustomerDTO>> listCustomers() throws DataBaseReadException {
         List<Customer> customers = customerService.listClients();
         return ResponseEntity.ok(CustomerDTO.modelToDTO(customers));
     }
 
     @GetMapping("customers/{id}")
-    public ResponseEntity<Object> findById(@PathVariable Long id) throws IOException {
+    public ResponseEntity<Object> findById(@PathVariable Long id) {
         Customer customer = customerService.findByID(id);
         if(customer == null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -39,7 +41,9 @@ public class CustomerController {
     }
 
     @PostMapping("customers/")
-    public ResponseEntity<List<?>> addCustomer(@RequestBody List<CustomerDTO> customersDtoToAdd, UriComponentsBuilder uriBuilder) throws IOException {
+    public ResponseEntity<List<CustomerCreatedDTO>> addCustomer(
+            @RequestBody List<CustomerDTO> customersDtoToAdd, UriComponentsBuilder uriBuilder
+    ) throws DataBaseReadException, DBEntryAlreadyExists, DataBaseWriteException {
         List<Customer> clientsToAdd = customersDtoToAdd.stream().map(CustomerDTO::dtoToModel).collect(Collectors.toList());
         List<Customer> addedCustomers = customerService.addClients(clientsToAdd);
 
@@ -52,4 +56,9 @@ public class CustomerController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(addedCustomersDTO);
     }
-}
+    @GetMapping("customers/find")
+    public ResponseEntity<List<Customer>> findCustomerByUf(@RequestParam String uf) throws NoSuchMethodException, DataBaseReadException {
+        List<Customer> customers = customerService.findCustomerByUf(uf);
+        return ResponseEntity.ok(customers);
+
+    }}
