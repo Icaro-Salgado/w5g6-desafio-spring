@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -20,5 +21,9 @@ public class CustomerService {
 
     public List<Customer> listClients() throws IOException {
         return repo.read();
+    }
+
+    public List<Customer> findCustomerByUf(String uf) throws IOException, NoSuchMethodException {
+        return repo.findBy(Map.of( "address.uf", uf));
     }
 }

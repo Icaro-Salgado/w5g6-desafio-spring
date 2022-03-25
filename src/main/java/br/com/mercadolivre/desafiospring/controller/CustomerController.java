@@ -41,4 +41,9 @@ public class CustomerController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(addedCustomersDTO);
     }
-}
+    @GetMapping("customers/find")
+    public ResponseEntity<List<Customer>> findCustomerByUf(@RequestParam String uf) throws IOException, NoSuchMethodException {
+        List<Customer> customers = customerService.findCustomerByUf(uf);
+        return ResponseEntity.ok(customers);
+
+    }}
