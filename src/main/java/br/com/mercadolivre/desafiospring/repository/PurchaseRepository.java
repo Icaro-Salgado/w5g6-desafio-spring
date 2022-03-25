@@ -52,7 +52,9 @@ public class PurchaseRepository implements ApplicationRepository<Purchase, Long>
             return purchases.stream()
                     .filter(purchase -> {
                         Object value = ClassUtils.invokeGetMethod(purchase, filter.getKey());
-                        return value.equals(filter.getValue());
+                        return value instanceof String
+                                ? ((String) value).equalsIgnoreCase((String) filter.getValue())
+                                : value.equals(filter.getValue());
                     })
                     .collect(Collectors.toList());
         }

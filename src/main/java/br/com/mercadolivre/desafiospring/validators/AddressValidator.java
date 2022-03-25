@@ -25,7 +25,7 @@ public class AddressValidator {
         return null;
     }
 
-    private static String missingFields(Address address){
+    public static String missingFields(Address address){
         List<String> fieldNames = List.of(
                 "street",
                 "neighborhood",

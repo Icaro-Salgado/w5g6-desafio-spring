@@ -15,11 +15,8 @@ import br.com.mercadolivre.desafiospring.validators.ValidatorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +40,10 @@ public class CustomerService {
             ErrorDTO customerError = ValidatorService.validateObject(CustomerValidator.class, c, new CustomerErrorDTO());
             ErrorDTO addressError = ValidatorService.validateObject(AddressValidator.class, c.getAddress(), new AddressErrorDTO());
 
-            if(customerError != null && addressError != null){
+            if(addressError != null){
+                if(customerError == null){
+                    customerError = new CustomerErrorDTO().modelToDTO(c, new ArrayList<>());
+                }
                 customerError.pushMessage(addressError.getErrors());
             }
             return customerError;
