@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class DBExceptionHandler {
-    // TODO: Criar uma exceção para escrita e uma para leitura
 
     @ExceptionHandler(value = {DataBaseWriteException.class})
     protected ResponseEntity<Object> handleWriteException(DataBaseWriteException ex) {
