@@ -1,5 +1,7 @@
 package br.com.mercadolivre.desafiospring.database;
 
+import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseReadException;
+import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,12 +20,22 @@ public class FileManager<T> {
 
     public FileManager() { this.objectMapper = new ObjectMapper(); }
 
-    public void writeIntoFile(String filename, Object objectToBeSaved) throws IOException {
-        objectMapper.writeValue(new File(pathDatabase.concat(filename)), objectToBeSaved);
+    public void writeIntoFile(String filename, Object objectToBeSaved) throws DataBaseWriteException {
+        try {
+            objectMapper.writeValue(new File(pathDatabase.concat(filename)), objectToBeSaved);
+        } catch (IOException e) {
+           throw new DataBaseWriteException(
+                   "Não foi possível escrever na database de: "
+           );
+        }
     }
 
-    public T readFromFile(String filename, Class<T> typeParameterClass) throws IOException {
-        return objectMapper.readValue(new File(pathDatabase.concat(filename)), typeParameterClass);
+    public T readFromFile(String filename, Class<T> typeParameterClass) throws DataBaseReadException {
+        try {
+            return objectMapper.readValue(new File(pathDatabase.concat(filename)), typeParameterClass);
+        } catch (IOException e) {
+            throw new DataBaseReadException("");
+        }
     }
 
 }
