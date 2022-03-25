@@ -28,14 +28,25 @@ public class CustomerController {
         return ResponseEntity.ok(CustomerDTO.modelToDTO(customers));
     }
 
-    @PostMapping("customers/")
-    public ResponseEntity<List<CustomerCreatedDTO>> addCustomer(@RequestBody List<CustomerDTO> customersDtoToAdd, UriComponentsBuilder uriBuilder) throws IOException {
-        List<Customer> clientsToAdd = customersDtoToAdd.stream().map(CustomerDTO::dtoToModel).collect(Collectors.toList());
+    @GetMapping("customers/{id}")
+    public ResponseEntity<Object> findById(@PathVariable Long id) throws IOException {
+        Customer customer = customerService.findByID(id);
+        if(customer == null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
 
+        return ResponseEntity.ok(CustomerDTO.modelToDTO(customer));
+    }
+
+    @PostMapping("customers/")
+    public ResponseEntity<List<?>> addCustomer(@RequestBody List<CustomerDTO> customersDtoToAdd, UriComponentsBuilder uriBuilder) throws IOException {
+        List<Customer> clientsToAdd = customersDtoToAdd.stream().map(CustomerDTO::dtoToModel).collect(Collectors.toList());
         List<Customer> addedCustomers = customerService.addClients(clientsToAdd);
 
+        UriComponentsBuilder uriBuilderComponent = uriBuilder.path("/api/v1/customers/{id}");
+
         List<CustomerCreatedDTO> addedCustomersDTO = addedCustomers.stream().map(c -> {
-            URI uri = uriBuilder.path("/customers/{id}").buildAndExpand(c.getId()).toUri();
+            URI uri = uriBuilderComponent.build(c.getId());
             return CustomerCreatedDTO.modelToDTO(c, uri);
         }).collect(Collectors.toList());
 

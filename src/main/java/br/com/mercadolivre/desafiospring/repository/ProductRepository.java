@@ -32,11 +32,12 @@ public class ProductRepository implements ApplicationRepository<Product, Long> {
     }
 
     @Override
-    public void add(List<Product> newProducts) throws IOException {
+    public List<Product> add(List<Product> newProducts) throws IOException {
         List<Product> products = read();
         products.addAll(newProducts);
 
         fileManager.writeIntoFile(filename, products);
+        return products;
     }
 
     @Override

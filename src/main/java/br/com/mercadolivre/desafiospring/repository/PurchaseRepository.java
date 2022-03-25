@@ -33,12 +33,13 @@ public class PurchaseRepository implements ApplicationRepository<Purchase, Long>
     }
 
     @Override
-    public void add(List<Purchase> listToAdd) throws IOException {
+    public List<Purchase> add(List<Purchase> listToAdd) throws IOException {
         List<Purchase> purchases = read();
 
         purchases.addAll(listToAdd);
 
         fileManager.writeIntoFile(filename,purchases);
+        return purchases;
     }
 
     @Override

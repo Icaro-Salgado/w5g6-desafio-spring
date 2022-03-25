@@ -51,7 +51,9 @@ public class CustomerRepository implements ApplicationRepository<Customer, Long>
                 customers = customers.stream()
                         .filter(client -> {
                             Object value = ClassUtils.invokeGetMethod(client, filter.getKey());
-                            return value.equals(filter.getValue());
+                            return value instanceof String
+                                    ? ((String) value).equalsIgnoreCase((String) filter.getValue())
+                                    : value.equals(filter.getValue());
                         })
                         .collect(Collectors.toList());
             }
@@ -77,16 +79,17 @@ public class CustomerRepository implements ApplicationRepository<Customer, Long>
     }
 
     @Override
-    public void add(List<Customer> listToAdd) throws IOException {
+    public List<Customer> add(List<Customer> listToAdd) throws IOException {
         List<Customer> customers = read();
         for(var clientToAdd: listToAdd){
             if (customers.contains(clientToAdd)) {
-                throw new FileAlreadyExistsException("Cliente " + clientToAdd.getEmail() +  "já cadastrado na base");
+                throw new FileAlreadyExistsException("Cliente " + clientToAdd.getEmail() +  " já cadastrado na base");
             }
             clientToAdd.setId((long) (customers.size() + 1));
             customers.add(clientToAdd);
         }
 
         fileManager.writeIntoFile(filename, customers);
+        return listToAdd;
     }
 }
