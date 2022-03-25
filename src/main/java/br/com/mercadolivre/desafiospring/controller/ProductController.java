@@ -4,6 +4,7 @@ import br.com.mercadolivre.desafiospring.dto.request.ProductDTO;
 import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.services.ProductService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,21 +26,21 @@ public class ProductController {
     final private ProductService productService;
 
     @PostMapping("insert-articles-request/")
-    public List<Product> InsertProducts(@RequestBody ProductDTO product) throws IOException {
-        return productService.addProducts(product.dtoToModel());
+    public ResponseEntity<List<Product>> InsertProducts(@RequestBody ProductDTO product) throws IOException {
+        return ResponseEntity.ok(productService.addProducts(product.dtoToModel()));
     }
 
     @GetMapping("articles")
-    public List<Product> retrieveProducts(@RequestParam("order") Optional<Integer> orderStrategy) throws IOException {
+    public ResponseEntity<List<Product>> retrieveProducts(@RequestParam("order") Optional<Integer> orderStrategy) throws IOException {
         if (orderStrategy.isPresent()) {
-            return productService.sortProducts(orderStrategy.get());
+            return ResponseEntity.ok(productService.sortProducts(orderStrategy.get()));
         }
-        return productService.getProducts();
+        return ResponseEntity.ok(productService.getProducts());
     }
 
     @GetMapping("category")
-    public List<Product> retrieveFilterByCategory(@RequestParam String category) throws IOException {
+    public ResponseEntity<List<Product>> retrieveFilterByCategory(@RequestParam String category) throws IOException {
 
-        return productService.filterByCategory(category);
+        return ResponseEntity.ok(productService.filterByCategory(category));
     }
 }
