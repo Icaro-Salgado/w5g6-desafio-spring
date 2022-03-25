@@ -11,20 +11,32 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CustomerErrorDTO implements ErrorDTO<Customer> {
+public class CustomerErrorDTO implements ErrorDTO{
     private String name;
     private String email;
     private AddressDTO address;
     private List<String> errors;
 
     @Override
-    public CustomerErrorDTO modelToDTO(Customer model, List<String> errorMessages) {
-        name = model.getName();
-        email = model.getEmail();
-        address = AddressDTO.modelToDTO(model.getAddress());
+    public CustomerErrorDTO modelToDTO(Object model, List<String> errorMessages) {
+        Customer customer = (Customer) model;
+        name = customer.getName();
+        email = customer.getEmail();
+        address = AddressDTO.modelToDTO(customer.getAddress());
         errors = errorMessages;
 
         return this;
+    }
+
+    @Override
+    public void pushMessage(String errorMessage) {
+        errors.add(errorMessage);
+
+    }
+
+    @Override
+    public void pushMessage(List<String> errorMessages) {
+        errors.addAll(errorMessages);
     }
 
 

@@ -1,17 +1,10 @@
 package br.com.mercadolivre.desafiospring.validators;
 
-import br.com.mercadolivre.desafiospring.dto.request.AddressDTO;
-import br.com.mercadolivre.desafiospring.dto.response.AddressErrorDTO;
-import br.com.mercadolivre.desafiospring.dto.response.CustomerErrorDTO;
 import br.com.mercadolivre.desafiospring.models.Customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -19,9 +12,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CustomerValidator {
 
-    private final Customer customer;
 
-    private String validateEmail() {
+    public static String validateEmail(Customer customer) {
         String regexPattern = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 
         boolean isValid = Pattern.compile(regexPattern).matcher(customer.getEmail()).matches();
@@ -33,8 +25,7 @@ public class CustomerValidator {
         return null;
     }
 
-
-    private String missingFields() {
+    public static String missingFields(Customer customer) {
         List<String> fieldNames = List.of(
                 "name",
                 "email"
@@ -58,42 +49,6 @@ public class CustomerValidator {
 
         return null;
 
-    }
-
-    public CustomerErrorDTO validate() {
-        // validators
-        Method[] declaredMethods = CustomerValidator.class.getDeclaredMethods();
-        List<String> errorMessages = new ArrayList<>();
-
-        Arrays.stream(declaredMethods)
-                .filter(m -> m.getModifiers() == Modifier.PRIVATE).collect(Collectors.toList())
-                .forEach(m -> {
-                    try {
-                        Object errorMessage = m.invoke(this);
-                        if (errorMessage != null) {
-                            errorMessages.add(errorMessage.toString());
-                        }
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
-                });
-
-        AddressValidator addressValidator = new AddressValidator(customer.getAddress());
-        AddressErrorDTO addressErrors = addressValidator.validate();
-
-        if (addressErrors != null) {
-            errorMessages.addAll(addressErrors.getErrors());
-        }
-
-
-        if (!errorMessages.isEmpty()) {
-            return new CustomerErrorDTO(
-                    customer.getName(),
-                    customer.getEmail(),
-                    AddressDTO.modelToDTO(customer.getAddress()),
-                    errorMessages);
-        }
-        return null;
     }
 
 }

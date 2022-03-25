@@ -1,13 +1,17 @@
 package br.com.mercadolivre.desafiospring.services;
 
+import br.com.mercadolivre.desafiospring.dto.response.AddressErrorDTO;
 import br.com.mercadolivre.desafiospring.dto.response.CustomerErrorDTO;
+import br.com.mercadolivre.desafiospring.dto.response.ErrorDTO;
 import br.com.mercadolivre.desafiospring.exceptions.InvalidBodyContentException;
 import br.com.mercadolivre.desafiospring.exceptions.db.DBEntryAlreadyExists;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseReadException;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
 import br.com.mercadolivre.desafiospring.models.Customer;
 import br.com.mercadolivre.desafiospring.repository.ApplicationRepository;
+import br.com.mercadolivre.desafiospring.validators.AddressValidator;
 import br.com.mercadolivre.desafiospring.validators.CustomerValidator;
+import br.com.mercadolivre.desafiospring.validators.ValidatorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,11 +38,16 @@ public class CustomerService {
     }
 
     public List<Customer> addClients(List<Customer> customers) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists {
-        List<CustomerErrorDTO> customerErrors = customers.stream().map(c -> {
-            CustomerValidator validator = new CustomerValidator(c);
 
+        List<ErrorDTO> customerErrors = customers.stream().map(c -> {
+            ErrorDTO customerError = ValidatorService.validateObject(CustomerValidator.class, c, new CustomerErrorDTO());
+            ErrorDTO addressError = ValidatorService.validateObject(AddressValidator.class, c.getAddress(), new AddressErrorDTO());
 
-            return validator.validate();
+            if(customerError != null && addressError != null){
+                customerError.pushMessage(addressError.getErrors());
+            }
+            return customerError;
+
         }).filter(Objects::nonNull).collect(Collectors.toList());
 
 
