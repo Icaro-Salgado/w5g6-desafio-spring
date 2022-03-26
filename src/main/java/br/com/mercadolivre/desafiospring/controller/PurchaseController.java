@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,10 +34,10 @@ public class PurchaseController {
 
     }
 
-    @PostMapping("/cart/{customerId}")
+    @GetMapping("/cart/{customerId}")
     public CartDTO effectiveCart(
             @PathVariable Long customerId
-    ) throws IOException, NoSuchMethodException, DataBaseReadException {
+    ) throws NoSuchMethodException, DataBaseReadException {
         List<Purchase> purchases = purchaseService.findCustomerPurchases(customerId);
 
         CartDTO cart = new CartDTO();
