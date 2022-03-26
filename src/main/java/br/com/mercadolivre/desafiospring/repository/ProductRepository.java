@@ -51,9 +51,8 @@ public class ProductRepository implements ApplicationRepository<Product, Long> {
     }
 
     @Override
-    public Optional<Product> find(Long id) throws DataBaseReadException {
-        List<Product> products = read();
-        return products.stream().filter(product -> product.getProductId().equals((id))).findFirst();
+    public Optional<Product> find(Long id) {
+        return Optional.empty();
     }
 
     @Override

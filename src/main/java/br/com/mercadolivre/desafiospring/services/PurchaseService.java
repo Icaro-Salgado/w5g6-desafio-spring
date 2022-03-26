@@ -9,6 +9,7 @@ import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.models.Purchase;
 import br.com.mercadolivre.desafiospring.models.PurchaseRequest;
 import br.com.mercadolivre.desafiospring.repository.ApplicationRepository;
+import br.com.mercadolivre.desafiospring.validators.PurchaseValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,27 +24,7 @@ public class PurchaseService {
 
     final private ApplicationRepository<Purchase, Long> repo;
     final private ApplicationRepository<Product, Long> productRepo;
-
-    public void StockQuantityValidation(List<Purchase> newPurchases) throws DataBaseReadException, OutOfStockException, NoSuchMethodException {
-
-        for (Purchase purchase :
-                newPurchases) {
-            for (Product product :
-                    purchase.getProducts()) {
-                Product stockProduct = productRepo.findBy(Map.of("name", product.getName(), "brand", product.getBrand())).get(0);
-                if (stockProduct.getQuantity() < product.getQuantity()) {
-
-                    throw new OutOfStockException("Sem estoque: Há apenas "
-                            .concat(stockProduct.getQuantity().toString())
-                            .concat(" unidades do produto ")
-                            .concat(product.getName())
-                            .concat(" em estoque. O pedido foi de ")
-                            .concat(product.getQuantity().toString())
-                            .concat("."));
-                }
-            }
-        }
-    }
+    final private PurchaseValidator validator = new PurchaseValidator();
 
     public List<Purchase> addPurchase(List<Purchase> purchase) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists {
         repo.add(purchase);
@@ -56,7 +37,7 @@ public class PurchaseService {
                 new Purchase(0L, 0L, p.getProducts(), new BigDecimal(0))
         ).collect(Collectors.toList());
 
-        StockQuantityValidation(newPurchases);
+        validator.StockValidation(productRepo, newPurchases);
 
         repo.add(newPurchases);
         return newPurchases;
