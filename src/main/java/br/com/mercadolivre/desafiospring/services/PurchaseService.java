@@ -21,20 +21,28 @@ import java.util.stream.Collectors;
 public class PurchaseService {
 
     final private ApplicationRepository<Purchase, Long> repo;
+    final private PurchaseOperation purchaseOperation;
 
     public List<Purchase> addPurchase(List<Purchase> purchase) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists {
         repo.add(purchase);
         return purchase;
     }
 
-    public List<Purchase> addPurchaseFromRequest(List<PurchaseRequest> purchaserequest) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists {
-//TODO: transformar em classe de conversão
-        List<Purchase> newpurchases = purchaserequest.stream().map(p ->
-                new Purchase(0L, 0L, p.getProducts(), new BigDecimal(0))
-        ).collect(Collectors.toList());
+    public List<Purchase> addPurchaseFromRequest(List<PurchaseRequest> purchaseRequest) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists {
+        List<Purchase> purchases = purchaseOperation.makePurchase(purchaseRequest);
 
-        repo.add(newpurchases);
-        return newpurchases;
+
+        //TODO: for a new implemantion refactor this way
+        Integer currentId= repo.read().size()  + 1;
+
+        for (Purchase purchase:purchases
+             ) {
+            purchase.setPurchaseId(currentId.longValue());
+            currentId+=1;
+        }
+
+        repo.add(purchases);
+        return purchases;
     }
 
     public List<Purchase> findCustomerPurchases(Long customerId) throws DataBaseReadException {

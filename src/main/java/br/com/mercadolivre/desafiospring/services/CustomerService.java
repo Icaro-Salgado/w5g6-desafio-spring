@@ -25,7 +25,7 @@ public class CustomerService {
     private final ApplicationRepository<Customer, Long> repo;
 
 
-    public Customer findByID(Long id) {
+    public Customer findByID(Long id) throws DataBaseReadException {
         Optional<Customer> optionalCustomer = repo.find(id);
 
         if(optionalCustomer.isEmpty()){

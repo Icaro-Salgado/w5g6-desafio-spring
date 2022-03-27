@@ -8,5 +8,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class PurchaseRequest {
+    private Long customerId;
     private List<Product> products;
 }

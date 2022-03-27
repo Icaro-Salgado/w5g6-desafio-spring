@@ -32,7 +32,7 @@ public class CustomerController {
     }
 
     @GetMapping("customers/{id}")
-    public ResponseEntity<Object> findById(@PathVariable Long id) {
+    public ResponseEntity<Object> findById(@PathVariable Long id) throws DataBaseReadException {
         Customer customer = customerService.findByID(id);
         if(customer == null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
