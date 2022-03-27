@@ -1,20 +1,18 @@
 # Log dos requisitos propostos
 
-## R01
+## R01 - Cadastrar uma lista de produtos
 
 > STATUS: COMPLETO
 
 ### Como testar
 
-#### POST:
-
-> */api/v1/insert-articles-request/*
+- POST: */api/v1/insert-articles-request/*
 
 #### BODY
-
+**Mudamos o nome de "articles" para "products"**
 ```JSON
 {
-  // Mudamos o nome de "articles" para "products"
+  
   "products": [
     {
       "productId": 1,
@@ -59,15 +57,13 @@
 }
 ```
 
-## R02
+## R02 - Retornar uma lista de todos os produtos cadastrados
 
 > STATUS: COMPLETO
 
 ### Como testar
 
-#### GET:
-
-> */api/v1/articles/*
+- GET: */api/v1/articles/*
 
 #### BODY
 
@@ -89,17 +85,17 @@
   ]
 ```
 
-## R03
+## R03 - Filtrar produtos por categoria
 
 > STATUS: COMPLETO
 
 ### Como testar
 
-#### GET:
-
-> */api/v1/articles?category=ferramentas*
+- GET: */api/v1/articles?category=ferramentas*
 
 #### BODY
+
+--
 
 #### RESPONSE (Primeiro request)
 
@@ -148,15 +144,15 @@
 ]
 ```
 
-## R04
+## R04 - Filtrar clientes com uma combinação de filtros
 
 > STATUS: COMPLETO
 
-#### GET:
-
-> */api/v1/articles?category=Ferramentas&brand=Black%20%26%20Decker*
+- GET: */api/v1/articles?category=Ferramentas&brand=Black%20%26%20Decker*
 
 #### BODY
+
+--
 
 #### RESPONSE (Primeiro request)
 
@@ -190,13 +186,11 @@
 ]
 ```
 
-## R05
+## R05 - Ordenar clientes por ordem alfabetica
 
 > STATUS: COMPLETO
 
-#### GET:
-
-> */api/v1/articles?order=0&category=ferramentas*
+- GET: */api/v1/articles?order=0&category=ferramentas*
 
 #### BODY
 
@@ -247,13 +241,11 @@
 ]
 ```
 
-## R06
+## R06 - Ordenar produtos por maior preço
 
 > STATUS: COMPLETO
 
-#### GET:
-
-> */api/v1/articles?order=2*
+- GET: */api/v1/articles?order=2*
 
 #### BODY
 
@@ -394,13 +386,11 @@
 ]
 ```
 
-## R07
+## R07 - Ordenar produtos por menor preço
 
 > STATUS: COMPLETO
 
-#### GET:
-
-> */api/v1/articles?order=3*
+- GET: */api/v1/articles?order=3*
 
 #### BODY
 
@@ -541,13 +531,11 @@
 ]
 ```
 
-## R08
+## R08 - Realizar um envio de um pedido de compra
 
 > STATUS: COMPLETO
 
-#### POST:
-
-> */api/v1/purchase-request*
+- POST: */api/v1/purchase-request*
 
 #### BODY
 
@@ -605,25 +593,21 @@
 ]
 ```
 
-## R09
+## R09 - Validação de estoque num pedido de compra
 
 > STATUS: PARCIALMENTE COMPLETO
 
-#### GET:
-
-> */api/v1/purchase-request*
+- GET: */api/v1/purchase-request*
 
 #### BODY
 
 #### RESPONSE (Primeiro request)
 
-## R10
+## R10 - Pegar histórico de compras de um cliente
 
 > STATUS: COMPLETO
 
-#### GET:
-
-> */api/v1/purchase-request/cart/1*
+- GET: */api/v1/purchase-request/cart/1*
 
 **No caso você pode substituir o */1* pelo ID do customer relacionado a compra**
 
@@ -659,27 +643,27 @@
 }
 ```
 
-## R11
+## R11 - Cadastro de um novo cliente
 
 > STATUS: COMPLETO
 
-#### POST: > */api/v1/customers/*
+- POST > */api/v1/customers/*
 
 #### BODY
 
 ```JSON
 [
-{
-"name": "test",
-"email": "newclient2@tosave2.com",
-"address": {
-"street": "street 1",
-"neighborhood": "Neigh 1",
-"uf": "SC",
-"country": "Brazil",
-"zipcode": "00000000"
-}
-}
+  {
+    "name": "test",
+    "email": "newclient2@tosave2.com",
+    "address": {
+      "street": "street 1",
+      "neighborhood": "Neigh 1",
+      "uf": "SC",
+      "country": "Brazil",
+      "zipcode": "00000000"
+    }
+  }
 ]
 ```
 
@@ -696,13 +680,11 @@
 ]
 ```
 
-## R12
+## R12 - Listar todos os clientes
 
 > STATUS: COMPLETO
 
-#### GET:
-
-> */api/v1/customers/*
+- GET: */api/v1/customers/*
 
 #### BODY
 
@@ -724,13 +706,11 @@
 ]
 ```
 
-## R13
+## R13 - Filtrar clientes por estado
 
 > STATUS: COMPLETO
 
-#### GET:
-
-> */api/v1/customers?uf=SC*
+- GET: */api/v1/customers?uf=SC*
 
 #### BODY
 
