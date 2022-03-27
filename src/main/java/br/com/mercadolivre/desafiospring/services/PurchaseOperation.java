@@ -67,7 +67,6 @@ public class PurchaseOperation {
 
     private BigDecimal calcTotalPurchaseValue(List<Product> products) {
 
-        System.out.println(products);
         BigDecimal result = products.stream().map(Product::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
 
         return result;
