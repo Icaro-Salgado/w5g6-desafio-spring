@@ -9,7 +9,6 @@ import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.models.Purchase;
 import br.com.mercadolivre.desafiospring.models.PurchaseRequest;
 import br.com.mercadolivre.desafiospring.repository.ApplicationRepository;
-import br.com.mercadolivre.desafiospring.validators.PurchaseValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,6 @@ public class PurchaseService {
 
     final private ApplicationRepository<Purchase, Long> repo;
     final private ApplicationRepository<Product, Long> productRepo;
-    final private PurchaseValidator validator = new PurchaseValidator();
     final private PurchaseOperation purchaseOperation;
 
     public List<Purchase> addPurchase(List<Purchase> purchase) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists {
@@ -32,7 +30,7 @@ public class PurchaseService {
         return purchase;
     }
 
-    public List<Purchase> addPurchaseFromRequest(List<PurchaseRequest> purchaseRequest) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists {
+    public List<Purchase> addPurchaseFromRequest(List<PurchaseRequest> purchaseRequest) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists, NoSuchMethodException, OutOfStockException {
         List<Purchase> purchases = purchaseOperation.makePurchase(purchaseRequest);
 
 
@@ -43,11 +41,6 @@ public class PurchaseService {
              ) {
             purchase.setPurchaseId(currentId.longValue());
             currentId+=1;
-        }
-        List<String> outOfStockErrors = PurchaseValidator.StockValidation(productRepo, newPurchases);
-
-        if (outOfStockErrors != null) {
-            throw new OutOfStockException(outOfStockErrors.toString());
         }
 
         repo.add(purchases);
