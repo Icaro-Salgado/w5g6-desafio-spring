@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PurchaseRequestDTO {
 
+    private Long customerId;
     private List<Product> purchases;
 
 
@@ -25,7 +26,7 @@ public class PurchaseRequestDTO {
         List<PurchaseRequest> purchasesrequest = new ArrayList<PurchaseRequest>();
 
         purchasesrequest.add(
-                new PurchaseRequest(this.purchases)
+                new PurchaseRequest(this.customerId,this.purchases)
              );
         return purchasesrequest;
 
