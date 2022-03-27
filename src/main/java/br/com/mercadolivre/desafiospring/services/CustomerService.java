@@ -9,6 +9,7 @@ import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseReadException;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
 import br.com.mercadolivre.desafiospring.models.Customer;
 import br.com.mercadolivre.desafiospring.repository.ApplicationRepository;
+import br.com.mercadolivre.desafiospring.utils.ClassUtils;
 import br.com.mercadolivre.desafiospring.validators.AddressValidator;
 import br.com.mercadolivre.desafiospring.validators.CustomerValidator;
 import br.com.mercadolivre.desafiospring.validators.ValidatorService;
@@ -62,7 +63,9 @@ public class CustomerService {
         return repo.read();
     }
 
-    public List<Customer> findCustomerByUf(String uf) throws NoSuchMethodException, DataBaseReadException {
-        return repo.findBy(Map.of("address.uf", uf));
+    public List<Customer> findCustomerBy(Map<String, Object> filters) throws DataBaseReadException {
+        Map<String, Object> builtFilters = ClassUtils.buildStringFilters(filters);
+
+        return repo.findBy(builtFilters);
     }
 }

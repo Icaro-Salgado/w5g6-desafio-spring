@@ -37,7 +37,7 @@ public class PurchaseService {
         return newpurchases;
     }
 
-    public List<Purchase> findCustomerPurchases(Long customerId) throws NoSuchMethodException, DataBaseReadException {
+    public List<Purchase> findCustomerPurchases(Long customerId) throws DataBaseReadException {
         return repo.findBy(Map.of("customerId", customerId));
     }
 
