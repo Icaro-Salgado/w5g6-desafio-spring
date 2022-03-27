@@ -1,6 +1,6 @@
 package br.com.mercadolivre.desafiospring.database;
 
-import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseException;
+import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseManagementException;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseReadException;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,26 +43,26 @@ public class FileManager<T> {
         }
     }
 
-    private File connect(String Dbname) throws DataBaseException {
+    private File connect(String Dbname) throws DataBaseManagementException {
         File db = new File(pathDatabase.concat(Dbname));
 
         try {
             return db.exists() ? db : this.loadDefaultDBFrom(Dbname);
 
         } catch (SecurityException e) {
-            throw new DataBaseException("Não foi possível ler da database devido a permissão do arquivo".concat(Dbname));
+            throw new DataBaseManagementException("Não foi possível ler da database devido a permissão do arquivo".concat(Dbname));
 
         }
     }
 
-    private File loadDefaultDBFrom(String Dbname) throws DataBaseException {
+    private File loadDefaultDBFrom(String Dbname) throws DataBaseManagementException {
         File defaultDBFile = new File(pathDatabase.concat("default_db/").concat(Dbname));
 
         if (defaultDBFile.exists()) {
             try {
                 Files.copy(defaultDBFile.toPath(), new File(pathDatabase.concat(Dbname)).toPath());
             } catch (IOException e) {
-                throw new DataBaseException("Não foi possível gerar uma nova base de dados");
+                throw new DataBaseManagementException("Não foi possível gerar uma nova base de dados");
             }
         }
 

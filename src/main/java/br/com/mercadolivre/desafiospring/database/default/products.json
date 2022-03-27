@@ -1,0 +1,122 @@
+[
+  {
+    "productId": 1,
+    "name": "Serra de Bancada",
+    "category": "Ferramentas",
+    "brand": "FORTGPRO",
+    "price": "R$1.800",
+    "quantity": 5,
+    "freeShipping": "SIM",
+    "prestige": "****"
+  },
+  {
+    "productId": 2,
+    "name": "Furadeira",
+    "category": "Ferramentas",
+    "brand": "Black & Decker",
+    "price": "R$500",
+    "quantity": 7,
+    "freeShipping": "SIM",
+    "prestige": "****"
+  },
+  {
+    "productId": 3,
+    "name": "Soldadora",
+    "category": "Ferramentas",
+    "brand": "Black & Decker",
+    "price": "R$350",
+    "quantity": 10,
+    "freeShipping": "SIM",
+    "prestige": "***"
+  },
+  {
+    "productId": 4,
+    "name": "Chuteira",
+    "category": "Esportes",
+    "brand": "Adidas",
+    "price": "R$235",
+    "quantity": 6,
+    "freeShipping": "SIM",
+    "prestige": "*****"
+  },
+  {
+    "productId": 5,
+    "name": "Mini Cama elastica",
+    "category": "Esportes",
+    "brand": "Starboard",
+    "price": "R$183",
+    "quantity": 4,
+    "freeShipping": "SIM",
+    "prestige": "*****"
+  },
+  {
+    "productId": 6,
+    "name": "Camiseta",
+    "category": "Esportes",
+    "brand": "Topper",
+    "price": "R$80",
+    "quantity": 2,
+    "freeShipping": "NÃO",
+    "prestige": "***"
+  },
+  {
+    "productId": 7,
+    "name": "Redmi Note 9",
+    "category": "Celulares",
+    "brand": "Xiaomi",
+    "price": "R$2.800",
+    "quantity": 15,
+    "freeShipping": "SIM",
+    "prestige": "****"
+  },
+  {
+    "productId": 8,
+    "name": "Smartwatch",
+    "category": "Celulares",
+    "brand": "Noga",
+    "price": "R$1.200",
+    "quantity": 20,
+    "freeShipping": "NÃO",
+    "prestige": "**"
+  },
+  {
+    "productId": 9,
+    "name": "Camisa",
+    "category": "Roupas",
+    "brand": "Fila",
+    "price": "R$79",
+    "quantity": 2,
+    "freeShipping": "NÃO",
+    "prestige": "***"
+  },
+  {
+    "productId": 10,
+    "name": "Calças",
+    "category": "Roupas",
+    "brand": "Oakley",
+    "price": "R$73",
+    "quantity": 6,
+    "freeShipping": "NÃO",
+    "prestige": "***"
+  },
+  {
+    "productId": 11,
+    "name": "Meias",
+    "category": "Roupas",
+    "brand": "Gonew",
+    "price": "R$10",
+    "quantity": 8,
+    "freeShipping": "NÃO",
+    "prestige": "*"
+  },
+  {
+    "productId": 12,
+    "name": "Shorts",
+    "category": "Roupas",
+    "brand": "Lacoste",
+    "price": "R$275",
+    "quantity": 9,
+    "freeShipping": "SIM",
+    "prestige": "***"
+  }
+]
