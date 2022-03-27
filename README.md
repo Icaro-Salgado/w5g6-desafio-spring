@@ -17,7 +17,10 @@ declaração proposta, uma especificação de requisitos e documentação anexad
 - **Repositories** - Responsável por separar a camada de domínio da camada de persistência de dados, os Repositories auxiliam na manutenção, extensão e até na criação dos testes. Além disso, esta isolação permite camada de Services se dedique apenas pela lógica de negócio.
 - **Models** - É a camada responsável por manter todas as entidades existentes na aplicação, como Produto, Endereço, Cliente, etc.
 - **Database** - É a camada que cuida de toda configuração necessária para se conectar com o banco de dados ou arquivo que irá persistir os dados.
-
+- **Exceptions** - A aplicação está preparada para tratar as principais exceções, esta camada serve para centralizar as exceções.
+- **Strategies** - Inspirado no Design Pattern do Gang of Four, esta camada mantém as principais estratégias para lidar com o filtro de produtos, em ordem crescente ou decrescente por nome ou preço.
+- **Utils** - Camada responsável por manter algumas classes com métodos utilitários que são usados ao longo do fluxo da aplicação.
+- **Validators** - Camada que centraliza as principais validações necessárias na aplicação.
 
 
 ## Membros do grupo
