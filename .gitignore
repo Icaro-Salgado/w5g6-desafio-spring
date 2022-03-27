@@ -221,4 +221,7 @@ Temporary Items
 
 # Support for Project snippet scope
 
+# Project DB
+src/main/java/br/com/mercadolivre/desafiospring/database/*.json
+
 # End of https://www.toptal.com/developers/gitignore/api/java,macos,intellij,visualstudiocode

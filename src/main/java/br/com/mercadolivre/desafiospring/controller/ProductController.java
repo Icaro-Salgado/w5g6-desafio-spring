@@ -1,6 +1,7 @@
 package br.com.mercadolivre.desafiospring.controller;
 
 import br.com.mercadolivre.desafiospring.dto.request.ProductDTO;
+import br.com.mercadolivre.desafiospring.dto.response.ProductFilterDTO;
 import br.com.mercadolivre.desafiospring.dto.response.ProductsCreatedDTO;
 import br.com.mercadolivre.desafiospring.dto.response.ResponseProductDTO;
 import br.com.mercadolivre.desafiospring.exceptions.db.DBEntryAlreadyExists;
@@ -41,9 +42,9 @@ public class ProductController {
     }
 
     @RequestMapping(value = "articles",method = RequestMethod.GET)
-    public ResponseEntity<List<ResponseProductDTO>> findBy(@RequestParam Map<String, Object> parameters) throws DataBaseReadException, NoSuchMethodException {
+    public ResponseEntity<List<ProductFilterDTO>> findBy(@RequestParam Map<String, Object> parameters) throws DataBaseReadException {
         List<Product> products = productService.filterBy(parameters);
-        List<ResponseProductDTO> productsDTO = products.stream().map(ResponseProductDTO::new).collect(Collectors.toList());
+        List<ProductFilterDTO> productsDTO = products.stream().map(ProductFilterDTO::new).collect(Collectors.toList());
 
         return ResponseEntity.ok(productsDTO);
     }
