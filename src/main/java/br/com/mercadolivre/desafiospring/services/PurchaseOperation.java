@@ -37,7 +37,7 @@ public class PurchaseOperation {
 
             newPurchase.add(
                     new Purchase(null,
-                            pRequests.getCustomerId(),
+                            pRequests.getCustomerId(), // TODO: add existing customer existence validation
                             findedProducts,
                             calcTotalPurchaseValue(findedProducts)
                     ));
