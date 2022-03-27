@@ -25,7 +25,7 @@ public class FileManager<T> {
             objectMapper.writeValue(new File(pathDatabase.concat(filename)), objectToBeSaved);
         } catch (IOException e) {
            throw new DataBaseWriteException(
-                   "Não foi possível escrever na database ".concat(filename)
+                   "Não foi possível escrever a database ".concat(filename)
            );
         }
     }
@@ -35,7 +35,7 @@ public class FileManager<T> {
             return objectMapper.readValue(new File(pathDatabase.concat(filename)), typeParameterClass);
         } catch (IOException e) {
             throw new DataBaseReadException(
-                    "Não foi possível ler da database ".concat(filename)
+                    "Não foi possível ler a database ".concat(filename)
             );
         }
     }

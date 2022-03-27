@@ -67,16 +67,10 @@ public class CustomerRepository implements ApplicationRepository<Customer, Long>
     }
 
     @Override
-    public Optional<Customer> find(Long id) {
-        try {
-            Customer[] customers = fileManager.readFromFile(filename, Customer[].class);
+    public Optional<Customer> find(Long id) throws DataBaseReadException {
+        Customer[] customers = fileManager.readFromFile(filename, Customer[].class);
 
-            return Arrays.stream(customers).filter(c -> c.getId().equals(id)).findFirst();
-
-        } catch (DataBaseReadException e) {
-            return Optional.empty();
-        }
-
+        return Arrays.stream(customers).filter(c -> c.getId().equals(id)).findFirst();
     }
 
     @Override
