@@ -38,10 +38,14 @@ public class PurchaseController {
     @GetMapping("/cart/{customerId}")
     public CartDTO effectiveCart(
             @PathVariable Long customerId
-    ) throws NoSuchMethodException, DataBaseReadException {
+    ) throws DataBaseReadException {
         List<Purchase> purchases = purchaseService.findCustomerPurchases(customerId);
-
         CartDTO cart = new CartDTO();
+
+        if (purchases.isEmpty()) {
+            return cart;
+        }
+
         cart.setProducts(purchases.get(0).getProducts());
         cart.setTotal(purchaseService.effectiveCustomerCart(purchases));
         return cart;
