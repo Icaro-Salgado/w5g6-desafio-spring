@@ -77,7 +77,7 @@ public class ProductService {
         return repo.findBy(search);
     }
 
-    public Product findProduct(Long id) {
+    public Product findProduct(Long id) throws DataBaseReadException {
         return repo.find(id).orElse(new Product());
     }
 }

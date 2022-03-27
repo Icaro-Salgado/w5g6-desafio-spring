@@ -3,6 +3,7 @@ package br.com.mercadolivre.desafiospring.repository;
 import br.com.mercadolivre.desafiospring.database.FileManager;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseReadException;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
+import br.com.mercadolivre.desafiospring.models.Customer;
 import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.utils.ClassUtils;
 import lombok.RequiredArgsConstructor;
@@ -62,8 +63,12 @@ public class ProductRepository implements ApplicationRepository<Product, Long> {
     }
 
     @Override
-    public Optional<Product> find(Long id) {
-        return Optional.empty();
+    public Optional<Product> find(Long id) throws DataBaseReadException {
+
+            Product[] products = fileManager.readFromFile(filename, Product[].class);
+
+            return Arrays.stream(products).filter(p -> p.getId().equals(id)).findFirst();
+
     }
 
 
