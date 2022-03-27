@@ -10,9 +10,6 @@ import br.com.mercadolivre.desafiospring.strategies.PriceSort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,29 +37,26 @@ public class ProductService {
 
     private List<Product> sortProducts(Integer sortStrategy, List<Product> productList) throws DataBaseReadException {
 
-        List<Product> products = productList;
-
         switch (sortStrategy) {
             case 0:
-                return new AlphabeticalSort().sortAsc(products);
+                return new AlphabeticalSort().sortAsc(productList);
             case 1:
-                return new AlphabeticalSort().sortDesc(products);
+                return new AlphabeticalSort().sortDesc(productList);
             case 2:
-                return new PriceSort().sortDesc(products);
+                return new PriceSort().sortDesc(productList);
             case 3:
-                return new PriceSort().sortAsc(products);
+                return new PriceSort().sortAsc(productList);
             default:
-                return products;
+                return productList;
         }
     }
 
     public List<Product> getProducts() throws DataBaseReadException {
-        List<Product> products = repo.read();
 
-        return products;
+        return repo.read();
     }
 
-    public List<Product> filterBy(Map<String, Object> search) throws DataBaseReadException, NoSuchMethodException {
+    public List<Product> filterBy(Map<String, Object> search) throws DataBaseReadException {
         Object order;
         List<Product> products;
 

@@ -14,5 +14,5 @@ public interface ApplicationRepository<T, K> {
     public List<T> read() throws DataBaseReadException;
     public Optional<T> find(K id) throws DataBaseReadException;
     public List<T> add(List<T> listToAdd) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists;
-    public List<T> findBy(Map<String, Object> filters) throws NoSuchMethodException, DataBaseReadException;
+    public List<T> findBy(Map<String, Object> filters) throws DataBaseReadException;
 }
