@@ -38,7 +38,9 @@ public class ProductRepository implements ApplicationRepository<Product, Long> {
                 products = products.stream()
                         .filter(client -> {
                             Object value = ClassUtils.invokeGetMethod(client, filter.getKey());
-                            return value.equals(filter.getValue());
+                            return value instanceof String
+                                    ? ((String) value).equalsIgnoreCase((String) filter.getValue())
+                                    : value.equals(filter.getValue());
                         })
                         .collect(Collectors.toList());
             }
@@ -51,13 +53,18 @@ public class ProductRepository implements ApplicationRepository<Product, Long> {
     }
 
     @Override
+    public List<Product> add(List<Product> newProducts) throws DataBaseReadException, DataBaseWriteException {
+        List<Product> products = read();
+        products.addAll(newProducts);
+
+        fileManager.writeIntoFile(filename, products);
+        return products;
+    }
+
+    @Override
     public Optional<Product> find(Long id) {
         return Optional.empty();
     }
 
-    @Override
-    public void add(List<Product> updateProducts) throws DataBaseReadException, DataBaseWriteException {
-        fileManager.writeIntoFile(filename, updateProducts);
-    }
 
 }

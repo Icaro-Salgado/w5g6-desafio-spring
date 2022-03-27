@@ -35,12 +35,13 @@ public class PurchaseRepository implements ApplicationRepository<Purchase, Long>
     }
 
     @Override
-    public void add(List<Purchase> listToAdd) throws DataBaseReadException, DataBaseWriteException {
+    public List<Purchase> add(List<Purchase> listToAdd) throws DataBaseReadException, DataBaseWriteException {
         List<Purchase> purchases = read();
 
         purchases.addAll(listToAdd);
 
-        fileManager.writeIntoFile(filename, purchases);
+        fileManager.writeIntoFile(filename,purchases);
+        return purchases;
     }
 
     @Override
@@ -51,7 +52,9 @@ public class PurchaseRepository implements ApplicationRepository<Purchase, Long>
             return purchases.stream()
                     .filter(purchase -> {
                         Object value = ClassUtils.invokeGetMethod(purchase, filter.getKey());
-                        return value.equals(filter.getValue());
+                        return value instanceof String
+                                ? ((String) value).equalsIgnoreCase((String) filter.getValue())
+                                : value.equals(filter.getValue());
                     })
                     .collect(Collectors.toList());
         }

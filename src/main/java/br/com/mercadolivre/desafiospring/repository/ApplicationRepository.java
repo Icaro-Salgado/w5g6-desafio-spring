@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface ApplicationRepository<T, K> {
     public List<T> read() throws DataBaseReadException;
-    public Optional<T> find(K id) throws DataBaseReadException;
-    public void add(List<T> listToAdd) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists;
+    public Optional<T> find(K id);
+    public List<T> add(List<T> listToAdd) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists;
     public List<T> findBy(Map<String, Object> filters) throws NoSuchMethodException, DataBaseReadException;
 }

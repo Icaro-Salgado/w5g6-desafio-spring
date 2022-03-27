@@ -10,6 +10,9 @@ import br.com.mercadolivre.desafiospring.strategies.PriceSort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,9 +37,10 @@ public class ProductService {
         return createdProducts;
     }
 
-    public List<Product> sortProducts(Integer sortStrategy) throws DataBaseReadException {
 
-        List<Product> products = repo.read();
+    private List<Product> sortProducts(Integer sortStrategy, List<Product> productList) throws DataBaseReadException {
+
+        List<Product> products = productList;
 
         switch (sortStrategy) {
             case 0:
@@ -58,7 +62,18 @@ public class ProductService {
         return products;
     }
 
-    public List<Product> filterBy(Map<String, Object> search) throws NoSuchMethodException, DataBaseReadException {
+    public List<Product> filterBy(Map<String, Object> search) throws DataBaseReadException, NoSuchMethodException {
+        Object order;
+        List<Product> products;
+
+        if (search.containsKey("order")) {
+            order = search.get("order");
+            search.remove("order");
+            products = repo.findBy(search);
+
+            return sortProducts(Integer.parseInt(order.toString()), products);
+        }
+
         return repo.findBy(search);
     }
 

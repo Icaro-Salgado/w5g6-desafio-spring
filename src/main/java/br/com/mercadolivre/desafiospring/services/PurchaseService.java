@@ -53,7 +53,7 @@ public class PurchaseService {
         if (purchases.size() > 0) {
             List<Product> products = purchases.get(0).getProducts();
             total = products.stream()
-                    .map(p -> p.getPrice() == null ? BigDecimal.valueOf(0) : p.getPrice())
+                    .map(p -> p.getPrice() == null ? BigDecimal.valueOf(0) : p.getPrice().multiply(BigDecimal.valueOf(p.getQuantity())))
                     .reduce(BigDecimal.valueOf(0), BigDecimal::add);
         }
 
