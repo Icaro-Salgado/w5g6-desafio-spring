@@ -25,29 +25,36 @@ public class PurchaseService {
     final private ApplicationRepository<Purchase, Long> repo;
     final private ApplicationRepository<Product, Long> productRepo;
     final private PurchaseValidator validator = new PurchaseValidator();
+    final private PurchaseOperation purchaseOperation;
 
     public List<Purchase> addPurchase(List<Purchase> purchase) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists {
         repo.add(purchase);
         return purchase;
     }
 
-    public List<Purchase> addPurchaseFromRequest(List<PurchaseRequest> purchaseRequest) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists, OutOfStockException, NoSuchMethodException {
-        //TODO: transformar em classe de conversão
-        List<Purchase> newPurchases = purchaseRequest.stream().map(p ->
-                new Purchase(0L, 0L, p.getProducts(), new BigDecimal(0))
-        ).collect(Collectors.toList());
+    public List<Purchase> addPurchaseFromRequest(List<PurchaseRequest> purchaseRequest) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists {
+        List<Purchase> purchases = purchaseOperation.makePurchase(purchaseRequest);
 
+
+        //TODO: for a new implemantion refactor this way
+        Integer currentId= repo.read().size()  + 1;
+
+        for (Purchase purchase:purchases
+             ) {
+            purchase.setPurchaseId(currentId.longValue());
+            currentId+=1;
+        }
         List<String> outOfStockErrors = PurchaseValidator.StockValidation(productRepo, newPurchases);
 
         if (outOfStockErrors != null) {
             throw new OutOfStockException(outOfStockErrors.toString());
         }
 
-        repo.add(newPurchases);
-        return newPurchases;
+        repo.add(purchases);
+        return purchases;
     }
 
-    public List<Purchase> findCustomerPurchases(Long customerId) throws NoSuchMethodException, DataBaseReadException {
+    public List<Purchase> findCustomerPurchases(Long customerId) throws DataBaseReadException {
         return repo.findBy(Map.of("customerId", customerId));
     }
 

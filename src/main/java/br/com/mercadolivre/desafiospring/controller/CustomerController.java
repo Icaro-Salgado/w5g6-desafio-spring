@@ -15,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -24,14 +25,14 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    @GetMapping("customers/")
-    public ResponseEntity<List<CustomerDTO>> listCustomers() throws DataBaseReadException {
-        List<Customer> customers = customerService.listClients();
+    @GetMapping("customers")
+    public ResponseEntity<List<CustomerDTO>> listCustomers(@RequestParam Map<String, Object> parameters) throws DataBaseReadException {
+        List<Customer> customers = parameters.isEmpty() ? customerService.listClients() : customerService.findCustomerBy(parameters);
         return ResponseEntity.ok(CustomerDTO.modelToDTO(customers));
     }
 
     @GetMapping("customers/{id}")
-    public ResponseEntity<Object> findById(@PathVariable Long id) {
+    public ResponseEntity<Object> findById(@PathVariable Long id) throws DataBaseReadException {
         Customer customer = customerService.findByID(id);
         if(customer == null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -56,9 +57,5 @@ public class CustomerController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(addedCustomersDTO);
     }
-    @GetMapping("customers/find")
-    public ResponseEntity<List<Customer>> findCustomerByUf(@RequestParam String uf) throws NoSuchMethodException, DataBaseReadException {
-        List<Customer> customers = customerService.findCustomerByUf(uf);
-        return ResponseEntity.ok(customers);
 
-    }}
+}
