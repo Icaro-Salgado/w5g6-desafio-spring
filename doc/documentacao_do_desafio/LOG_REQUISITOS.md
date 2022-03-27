@@ -542,6 +542,7 @@
 ```
 
 ## R08
+
 > STATUS: COMPLETO
 
 #### POST:
@@ -609,6 +610,7 @@
 > STATUS: PARCIALMENTE COMPLETO
 
 #### GET:
+
 > */api/v1/purchase-request*
 
 #### BODY
@@ -617,39 +619,67 @@
 
 ## R10
 
-> STATUS: PARCIALMENTE COMPLETO
+> STATUS: COMPLETO
 
 #### GET:
 
-> */api/v1/purchase-request/cart/*
+> */api/v1/purchase-request/cart/1*
+
+**No caso você pode substituir o */1* pelo ID do customer relacionado a compra**
 
 #### BODY
 
 #### RESPONSE (Primeiro request)
 
+```JSON
+{
+  "products": [
+    {
+      "name": "Serra de Bancada",
+      "category": "Ferramentas",
+      "brand": "FORTGPRO",
+      "price": 1800,
+      "quantity": 5,
+      "freeShipping": true,
+      "prestige": "****",
+      "productId": 1
+    },
+    {
+      "name": "Furadeira",
+      "category": "Ferramentas",
+      "brand": "Black & Decker",
+      "price": 500,
+      "quantity": 7,
+      "freeShipping": true,
+      "prestige": "****",
+      "productId": 2
+    }
+  ],
+  "total": 12500
+}
+```
+
 ## R11
 
 > STATUS: COMPLETO
 
-#### POST:
-
-> */api/v1/customers/*
+#### POST: > */api/v1/customers/*
 
 #### BODY
 
 ```JSON
 [
-  {
-    "name": "test",
-    "email": "newclient2@tosave2.com",
-    "address": {
-      "street": "street 1",
-      "neighborhood": "Neigh 1",
-      "uf": "SC",
-      "country": "Brazil",
-      "zipcode": "00000000"
-    }
-  }
+{
+"name": "test",
+"email": "newclient2@tosave2.com",
+"address": {
+"street": "street 1",
+"neighborhood": "Neigh 1",
+"uf": "SC",
+"country": "Brazil",
+"zipcode": "00000000"
+}
+}
 ]
 ```
 
@@ -667,6 +697,7 @@
 ```
 
 ## R12
+
 > STATUS: COMPLETO
 
 #### GET:
@@ -692,7 +723,9 @@
   }
 ]
 ```
+
 ## R13
+
 > STATUS: COMPLETO
 
 #### GET:
