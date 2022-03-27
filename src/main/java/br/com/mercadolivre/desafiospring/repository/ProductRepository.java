@@ -38,7 +38,9 @@ public class ProductRepository implements ApplicationRepository<Product, Long> {
                 products = products.stream()
                         .filter(client -> {
                             Object value = ClassUtils.invokeGetMethod(client, filter.getKey());
-                            return value.equals(filter.getValue());
+                            return value instanceof String
+                                    ? ((String) value).equalsIgnoreCase((String) filter.getValue())
+                                    : value.equals(filter.getValue());
                         })
                         .collect(Collectors.toList());
             }
