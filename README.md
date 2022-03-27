@@ -6,6 +6,10 @@ O objetivo deste sprint é aplicar os conteúdos fornecidos até o momento duran
 BOOTCAMP MeLi (Git, Java e Spring), para poder implementar uma API REST a partir de uma
 declaração proposta, uma especificação de requisitos e documentação anexada.
 
+**A collection utilizada no POSTMAN se encontra na pasta *doc/documentacao_do_desafio***
+
+**O LOG dos requisitos estão no arquivo *doc/documentacao_do_desafio/LOG_REQUISITOS.md"***
+
 ## Arquitetura da aplicação (multicamadas)
 - **DTO** - Camada responsável por receber as informações brutas e transforma-las em um objeto que a aplicação compreenda, além disso, ela pode servir também para transformar os dados a serem retornados para o cliente.
 - **Controller** - Esta camada está responsável por interceptar as requisições que chegam na API, e transformar os dados através da camada de DTO para um formato que a aplicação compreenda. Em seguida estes dados são enviados à camada de Services e o retorno pode ou não passar pelo DTO antes da resposta ao cliente.
