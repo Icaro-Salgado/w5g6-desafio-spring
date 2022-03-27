@@ -19,6 +19,9 @@ public class FileManager<T> {
     @Value("${path.database.file}")
     private String pathDatabase;
 
+    @Value("${path.database.default.file}")
+    private String pathDefaultDatabases;
+
     public FileManager() {
         this.objectMapper = new ObjectMapper();
     }
@@ -34,12 +37,18 @@ public class FileManager<T> {
     }
 
     public T readFromFile(String filename, Class<T> typeParameterClass) throws DataBaseReadException {
+        // TODO: Treat this exception
+
         try {
-            return objectMapper.readValue(new File(pathDatabase.concat(filename)), typeParameterClass);
+            File db = this.connect(filename);
+            return objectMapper.readValue(db, typeParameterClass);
         } catch (IOException e) {
             throw new DataBaseReadException(
                     "Não foi possível ler a database ".concat(filename)
             );
+        } catch (DataBaseManagementException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -56,16 +65,21 @@ public class FileManager<T> {
     }
 
     private File loadDefaultDBFrom(String Dbname) throws DataBaseManagementException {
-        File defaultDBFile = new File(pathDatabase.concat("default_db/").concat(Dbname));
+        File defaultDBFile = new File(pathDefaultDatabases.concat(Dbname).replace(".json", "").concat("_default.json"));
 
-        if (defaultDBFile.exists()) {
-            try {
-                Files.copy(defaultDBFile.toPath(), new File(pathDatabase.concat(Dbname)).toPath());
-            } catch (IOException e) {
-                throw new DataBaseManagementException("Não foi possível gerar uma nova base de dados");
-            }
+        if (!defaultDBFile.exists()) {
+            throw new DataBaseManagementException("Você precisa criar um modelo padrão para a database");
         }
 
-        return new File(pathDatabase.concat(Dbname));
+        // Cria uma nova dabase
+        File dbFile = new File(pathDatabase.concat(Dbname));
+
+        try {
+            Files.copy(defaultDBFile.toPath(), dbFile.toPath());
+        } catch (IOException e) {
+            throw new DataBaseManagementException("Não foi possível gerar uma nova base de dados");
+        }
+
+        return dbFile;
     }
 }

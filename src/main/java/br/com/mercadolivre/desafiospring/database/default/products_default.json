@@ -4,9 +4,9 @@
     "name": "Serra de Bancada",
     "category": "Ferramentas",
     "brand": "FORTGPRO",
-    "price": "R$1.800",
+    "price": 1800,
     "quantity": 5,
-    "freeShipping": "SIM",
+    "freeShipping": true,
     "prestige": "****"
   },
   {
@@ -14,9 +14,9 @@
     "name": "Furadeira",
     "category": "Ferramentas",
     "brand": "Black & Decker",
-    "price": "R$500",
+    "price": 500,
     "quantity": 7,
-    "freeShipping": "SIM",
+    "freeShipping": true,
     "prestige": "****"
   },
   {
@@ -24,9 +24,9 @@
     "name": "Soldadora",
     "category": "Ferramentas",
     "brand": "Black & Decker",
-    "price": "R$350",
+    "price": 350,
     "quantity": 10,
-    "freeShipping": "SIM",
+    "freeShipping": true,
     "prestige": "***"
   },
   {
@@ -34,9 +34,9 @@
     "name": "Chuteira",
     "category": "Esportes",
     "brand": "Adidas",
-    "price": "R$235",
+    "price": 235,
     "quantity": 6,
-    "freeShipping": "SIM",
+    "freeShipping": true,
     "prestige": "*****"
   },
   {
@@ -44,9 +44,9 @@
     "name": "Mini Cama elastica",
     "category": "Esportes",
     "brand": "Starboard",
-    "price": "R$183",
+    "price": 183,
     "quantity": 4,
-    "freeShipping": "SIM",
+    "freeShipping": true,
     "prestige": "*****"
   },
   {
@@ -54,9 +54,9 @@
     "name": "Camiseta",
     "category": "Esportes",
     "brand": "Topper",
-    "price": "R$80",
+    "price": 80,
     "quantity": 2,
-    "freeShipping": "NÃO",
+    "freeShipping": false,
     "prestige": "***"
   },
   {
@@ -64,9 +64,9 @@
     "name": "Redmi Note 9",
     "category": "Celulares",
     "brand": "Xiaomi",
-    "price": "R$2.800",
+    "price": 2800,
     "quantity": 15,
-    "freeShipping": "SIM",
+    "freeShipping": true,
     "prestige": "****"
   },
   {
@@ -74,9 +74,9 @@
     "name": "Smartwatch",
     "category": "Celulares",
     "brand": "Noga",
-    "price": "R$1.200",
+    "price": 1200,
     "quantity": 20,
-    "freeShipping": "NÃO",
+    "freeShipping": false,
     "prestige": "**"
   },
   {
@@ -84,9 +84,9 @@
     "name": "Camisa",
     "category": "Roupas",
     "brand": "Fila",
-    "price": "R$79",
+    "price": 79,
     "quantity": 2,
-    "freeShipping": "NÃO",
+    "freeShipping": false,
     "prestige": "***"
   },
   {
@@ -94,9 +94,9 @@
     "name": "Calças",
     "category": "Roupas",
     "brand": "Oakley",
-    "price": "R$73",
+    "price": 73,
     "quantity": 6,
-    "freeShipping": "NÃO",
+    "freeShipping": false,
     "prestige": "***"
   },
   {
@@ -104,9 +104,9 @@
     "name": "Meias",
     "category": "Roupas",
     "brand": "Gonew",
-    "price": "R$10",
+    "price": 10,
     "quantity": 8,
-    "freeShipping": "NÃO",
+    "freeShipping": false,
     "prestige": "*"
   },
   {
@@ -114,9 +114,9 @@
     "name": "Shorts",
     "category": "Roupas",
     "brand": "Lacoste",
-    "price": "R$275",
+    "price": 275,
     "quantity": 9,
-    "freeShipping": "SIM",
+    "freeShipping": true,
     "prestige": "***"
   }
 ]
