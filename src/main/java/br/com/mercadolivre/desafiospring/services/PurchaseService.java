@@ -37,7 +37,11 @@ public class PurchaseService {
                 new Purchase(0L, 0L, p.getProducts(), new BigDecimal(0))
         ).collect(Collectors.toList());
 
-        validator.StockValidation(productRepo, newPurchases);
+        List<String> outOfStockErrors = PurchaseValidator.StockValidation(productRepo, newPurchases);
+
+        if (outOfStockErrors != null) {
+            throw new OutOfStockException(outOfStockErrors.toString());
+        }
 
         repo.add(newPurchases);
         return newPurchases;
