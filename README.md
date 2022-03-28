@@ -22,6 +22,53 @@ declaração proposta, uma especificação de requisitos e documentação anexad
 - **Utils** - Camada responsável por manter algumas classes com métodos utilitários que são usados ao longo do fluxo da aplicação.
 - **Validators** - Camada que centraliza as principais validações necessárias na aplicação.
 
+## Como rodar o projeto
+
+### Clone o repositório
+> git clone git@github.com:Icaro-Salgado/w5g6-desafio-spring.git
+
+### Caso queira abrir o projeto no IntelliJ
+
+Abra a pasta clonana no passo 1, aguarde a instalação das dependencias e rode o projeto
+
+### Caso queira rodar pela linha de comando
+
+#### Entre na pasta do desafio
+``` sh
+cd w5g6-desafio-spring
+```
+#### Instale as dependencias do maven
+``` sh
+mvn install
+```
+ou
+``` sh
+maven install
+```
+
+#### Realize o "build" do projeto
+``` sh
+mvn package
+```
+ou 
+``` sh
+maven package
+```
+
+#### Rode o projeto localmente
+**Importante que essa etapa seja realizada na raiz do projeto, na pasta "w5g6-desafio-spring"**
+``` sh
+java -jar ./target/desafio-spring-0.0.1-SNAPSHOT.jar
+```
+
+#### Realize uma chamada de teste em algum endpoint
+``` sh
+curl -X GET http://localhost:8080/api/v1/articles/
+```
+
+Os endpoints estão discriminados na pasta **doc** do projeto.
+Caso utilize o POSTMAN você pode importar a collection contida na pasta **doc** também.
+
 
 ## Membros do grupo
 | Evandro | Icaro | Klinton | Maram |Paulo| Pedro | Thainan |
