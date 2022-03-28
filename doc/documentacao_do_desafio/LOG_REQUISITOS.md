@@ -588,7 +588,7 @@
     ],
     "purchaseId": 4,
     "customerId": 1,
-    "totalPrice": 2300
+    "totalPrice": 12500
   }
 ]
 ```
@@ -622,6 +622,8 @@
 ```
 #### RESPONSE (Primeiro request)
 `Sem estoque: Há apenas 5 unidades do produto Serra de Bancada em estoque. O pedido foi de 15.`
+
+* *Bonus* - *O estoque é reduzido para cada pedido recebido*
 ## R10 - Pegar histórico de compras de um cliente
 
 > STATUS: COMPLETO
