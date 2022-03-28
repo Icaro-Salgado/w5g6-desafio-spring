@@ -288,7 +288,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{LOCAL}}/{{API_V1}}/purchase-request/cart/1",
+					"raw": "{{LOCAL}}/{{API_V1}}/purchase-request/cart/0",
 					"host": [
 						"{{LOCAL}}"
 					],
@@ -296,7 +296,7 @@
 						"{{API_V1}}",
 						"purchase-request",
 						"cart",
-						"1"
+						"0"
 					]
 				}
 			},
@@ -379,7 +379,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{LOCAL}}/{{API_V1}}/customers?uf=SC",
+					"raw": "{{LOCAL}}/{{API_V1}}/customers?uf=RJ",
 					"host": [
 						"{{LOCAL}}"
 					],
@@ -390,7 +390,7 @@
 					"query": [
 						{
 							"key": "uf",
-							"value": "SC"
+							"value": "RJ"
 						}
 					]
 				}

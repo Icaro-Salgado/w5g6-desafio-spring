@@ -105,5 +105,4 @@ public class PurchaseOperation {
 
         return result;
     }
-
 }
