@@ -601,8 +601,27 @@
 
 #### BODY
 
+```JSON
+{
+  "purchases": [
+    {
+      "productId": 1,
+      "name": "Serra de Bancada",
+      "brand": "FORTGPRO",
+      "quantity": 15
+    },
+    {
+      "productId": 2,
+      "name": "Furadeira",
+      "brand": "Black & Decker",
+      "quantity": 7
+    }
+  ],
+  "customerId": 1
+}
+```
 #### RESPONSE (Primeiro request)
-
+`Sem estoque: Há apenas 5 unidades do produto Serra de Bancada em estoque. O pedido foi de 15.`
 ## R10 - Pegar histórico de compras de um cliente
 
 > STATUS: COMPLETO
