@@ -26,7 +26,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @GetMapping("customers")
-    public ResponseEntity<List<CustomerDTO>> listCustomers(@RequestParam Map<String, Object> parameters) throws DataBaseReadException {
+    public ResponseEntity<List<CustomerDTO>> listCustomers(@RequestParam(required = false) Map<String, Object> parameters) throws DataBaseReadException {
         List<Customer> customers = parameters.isEmpty() ? customerService.listClients() : customerService.findCustomerBy(parameters);
         return ResponseEntity.ok(CustomerDTO.modelToDTO(customers));
     }
