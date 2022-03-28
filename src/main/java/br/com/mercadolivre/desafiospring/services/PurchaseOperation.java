@@ -1,6 +1,7 @@
 package br.com.mercadolivre.desafiospring.services;
 
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseReadException;
+import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
 import br.com.mercadolivre.desafiospring.exceptions.validations.OutOfStockException;
 import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.models.Purchase;
@@ -48,7 +49,7 @@ public class PurchaseOperation {
         return errors;
     }
 
-    public List<Purchase> makePurchase(List<PurchaseRequest> purchaseRequests) throws OutOfStockException, DataBaseReadException {
+    public List<Purchase> makePurchase(List<PurchaseRequest> purchaseRequests) throws OutOfStockException, DataBaseReadException, DataBaseWriteException {
 
         List<Purchase> newPurchase = new ArrayList<Purchase>();
         List<Product> findedProducts = new ArrayList<Product>();
@@ -68,6 +69,19 @@ public class PurchaseOperation {
 
             if (!outOfStockErrors.isEmpty()) {
                 throw new OutOfStockException(String.join("\n", outOfStockErrors));
+            }
+
+            for (Product p : findedProducts) {
+                Optional<Product> requestProduct = pRequests.getProducts()
+                        .stream().filter(r -> r.getId().equals(p.getId()))
+                        .findFirst();
+
+                if(requestProduct.isEmpty()){
+                    continue;
+                }
+
+
+                repo.update(Map.of("id", p.getId()), Map.of("quantity", p.getQuantity() - requestProduct.get().getQuantity()));
             }
 
             newPurchase.add(
