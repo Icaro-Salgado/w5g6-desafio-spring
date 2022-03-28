@@ -7,6 +7,7 @@ import br.com.mercadolivre.desafiospring.dto.request.PurchaseRequestDTO;
 import br.com.mercadolivre.desafiospring.exceptions.db.DBEntryAlreadyExists;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseReadException;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
+import br.com.mercadolivre.desafiospring.exceptions.validations.OutOfStockException;
 import br.com.mercadolivre.desafiospring.models.Purchase;
 import br.com.mercadolivre.desafiospring.services.PurchaseService;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,7 @@ public class PurchaseController {
     @PostMapping
     public ResponseEntity<List<PurchaseDTO>> purchaseRequest(
             @RequestBody PurchaseRequestDTO purchase
-    ) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists {
+    ) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists, OutOfStockException {
 
         List<Purchase> requestFromPurchases = purchaseService.addPurchaseFromRequest(purchase.dtoToModel());
 

@@ -4,6 +4,7 @@ package br.com.mercadolivre.desafiospring.services;
 import br.com.mercadolivre.desafiospring.exceptions.db.DBEntryAlreadyExists;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseReadException;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
+import br.com.mercadolivre.desafiospring.exceptions.validations.OutOfStockException;
 import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.models.Purchase;
 import br.com.mercadolivre.desafiospring.models.PurchaseRequest;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 public class PurchaseService {
 
     final private ApplicationRepository<Purchase, Long> repo;
+    final private ApplicationRepository<Product, Long> productRepo;
     final private PurchaseOperation purchaseOperation;
 
     public List<Purchase> addPurchase(List<Purchase> purchase) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists {
@@ -28,7 +30,7 @@ public class PurchaseService {
         return purchase;
     }
 
-    public List<Purchase> addPurchaseFromRequest(List<PurchaseRequest> purchaseRequest) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists {
+    public List<Purchase> addPurchaseFromRequest(List<PurchaseRequest> purchaseRequest) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists, OutOfStockException {
         List<Purchase> purchases = purchaseOperation.makePurchase(purchaseRequest);
 
 

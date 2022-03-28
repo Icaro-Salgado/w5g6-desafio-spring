@@ -3,6 +3,7 @@ package br.com.mercadolivre.desafiospring.controller.advice;
 import br.com.mercadolivre.desafiospring.exceptions.db.DBEntryAlreadyExists;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseReadException;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
+import br.com.mercadolivre.desafiospring.exceptions.validations.OutOfStockException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,5 +28,11 @@ public class DBExceptionHandler {
     protected ResponseEntity<Object> handleDuplicateEntryException(DBEntryAlreadyExists ex) {
         String bodyOfResponse = ex.getMessage();
         return ResponseEntity.status(HttpStatus.CONFLICT).body("");
+    }
+
+    @ExceptionHandler(value = {OutOfStockException.class})
+    protected ResponseEntity<Object> handleOutOfStockException(OutOfStockException ex) {
+        String bodyOfResponse = ex.getMessage();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyOfResponse);
     }
 }
