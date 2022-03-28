@@ -29,7 +29,7 @@ declaração proposta, uma especificação de requisitos e documentação anexad
 
 ### Caso queira abrir o projeto no IntelliJ
 
-Abra a pasta clonana no passo 1, aguarde a instalação das dependencias e rode o projeto
+Abra a pasta clonada no passo 1, aguarde a instalação das dependencias e rode o projeto.
 
 ### Caso queira rodar pela linha de comando
 
@@ -37,7 +37,7 @@ Abra a pasta clonana no passo 1, aguarde a instalação das dependencias e rode 
 ``` sh
 cd w5g6-desafio-spring
 ```
-#### Instale as dependencias do maven
+#### Instale as dependências do maven
 ``` sh
 mvn install
 ```
@@ -46,7 +46,7 @@ ou
 maven install
 ```
 
-#### Realize o "build" do projeto
+#### Realize o build do projeto
 ``` sh
 mvn package
 ```
