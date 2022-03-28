@@ -56,7 +56,8 @@ maven package
 ```
 
 #### Rode o projeto localmente
-**Importante que essa etapa seja realizada na raiz do projeto, na pasta "w5g6-desafio-spring"**
+> Importante que essa etapa seja realizada na raiz do projeto, na pasta "w5g6-desafio-spring"
+
 ``` sh
 java -jar ./target/desafio-spring-0.0.1-SNAPSHOT.jar
 ```
