@@ -3,11 +3,14 @@ package br.com.mercadolivre.desafiospring.repository;
 import br.com.mercadolivre.desafiospring.database.FileManager;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseReadException;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
+import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.models.Purchase;
 import br.com.mercadolivre.desafiospring.utils.ClassUtils;
+import br.com.mercadolivre.desafiospring.utils.RepositoryUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -60,4 +63,29 @@ public class PurchaseRepository implements ApplicationRepository<Purchase, Long>
         }
         return purchases;
     }
+
+    @Override
+    public Integer update(Map<String, Object> filters, Map<String, Object> values) throws DataBaseReadException, DataBaseWriteException {
+        try{
+            List<Purchase> purchases = findBy(filters);
+
+            RepositoryUtils.substituteValues(purchases, values);
+
+            List<Purchase> allPurchases = read();
+            List<Purchase> productList = allPurchases.stream().map(p -> {
+                Optional<Purchase> first = purchases.stream().filter(updated -> updated.getPurchaseId().equals(p.getPurchaseId())).findFirst();
+
+                return first.isEmpty() ? p : first.get();
+            }).collect(Collectors.toList());
+
+
+            fileManager.writeIntoFile(filename, productList);
+
+            return purchases.size();
+
+        }catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e){
+            return 0;
+        }
+    }
+
 }

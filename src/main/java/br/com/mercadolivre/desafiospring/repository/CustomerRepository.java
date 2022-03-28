@@ -5,11 +5,16 @@ import br.com.mercadolivre.desafiospring.exceptions.db.DBEntryAlreadyExists;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseReadException;
 import br.com.mercadolivre.desafiospring.exceptions.db.DataBaseWriteException;
 import br.com.mercadolivre.desafiospring.models.Customer;
+import br.com.mercadolivre.desafiospring.models.Product;
 import br.com.mercadolivre.desafiospring.utils.ClassUtils;
+import br.com.mercadolivre.desafiospring.utils.RepositoryUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.el.PropertyNotFoundException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -87,5 +92,30 @@ public class CustomerRepository implements ApplicationRepository<Customer, Long>
 
         fileManager.writeIntoFile(filename, customers);
         return listToAdd;
+    }
+
+    @Override
+    public Integer update(Map<String, Object> filters, Map<String, Object> values) throws DataBaseReadException, DataBaseWriteException {
+        try{
+            List<Customer> customers = findBy(filters);
+
+            RepositoryUtils.substituteValues(customers, values);
+
+            List<Customer> allCustomers = read();
+            List<Customer> customerList = allCustomers.stream().map(p -> {
+                Optional<Customer> first = customers.stream().filter(updated -> updated.getId().equals(p.getId())).findFirst();
+
+                return first.isEmpty() ? p : first.get();
+            }).collect(Collectors.toList());
+
+
+            fileManager.writeIntoFile(filename, customerList);
+
+            return customers.size();
+
+        }catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e){
+            return 0;
+        }
+
     }
 }
