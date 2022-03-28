@@ -30,7 +30,7 @@ public class PurchaseService {
         return purchase;
     }
 
-    public List<Purchase> addPurchaseFromRequest(List<PurchaseRequest> purchaseRequest) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists, NoSuchMethodException, OutOfStockException {
+    public List<Purchase> addPurchaseFromRequest(List<PurchaseRequest> purchaseRequest) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists, OutOfStockException {
         List<Purchase> purchases = purchaseOperation.makePurchase(purchaseRequest);
 
 

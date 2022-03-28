@@ -250,7 +250,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"purchases\":[\n      {\n         \"productId\":1,\n         \"name\":\"Serra de Bancada\",\n         \"brand\":\"FORTGPRO\",\n         \"quantity\":5\n       },\n      {\n         \"productId\":2,\n         \"name\":\"Furadeira\",\n          \"brand\":\"Black & Decker\",\n          \"quantity\":7\n       }\n     ]\n}\n",
+					"raw": "{\n   \"purchases\":[\n      {\n         \"productId\":1,\n         \"name\":\"Serra de Bancada\",\n         \"brand\":\"FORTGPRO\",\n         \"quantity\":100\n       },\n      {\n         \"productId\":2,\n         \"name\":\"Furadeira\",\n          \"brand\":\"Black & Decker\",\n          \"quantity\":7\n       }\n     ]\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -288,7 +288,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{LOCAL}}/{{API_V1}}/purchase-request/cart/0",
+					"raw": "{{LOCAL}}/{{API_V1}}/purchase-request/cart/1",
 					"host": [
 						"{{LOCAL}}"
 					],
@@ -296,7 +296,7 @@
 						"{{API_V1}}",
 						"purchase-request",
 						"cart",
-						"0"
+						"1"
 					]
 				}
 			},
@@ -379,7 +379,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{LOCAL}}/{{API_V1}}/customers?uf=RJ",
+					"raw": "{{LOCAL}}/{{API_V1}}/customers?uf=SC",
 					"host": [
 						"{{LOCAL}}"
 					],
@@ -390,7 +390,7 @@
 					"query": [
 						{
 							"key": "uf",
-							"value": "RJ"
+							"value": "SC"
 						}
 					]
 				}

@@ -595,7 +595,7 @@
 
 ## R09 - Validação de estoque num pedido de compra
 
-> STATUS: PARCIALMENTE COMPLETO
+> STATUS: COMPLETO
 
 - GET: */api/v1/purchase-request*
 

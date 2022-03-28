@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -65,11 +64,10 @@ public class PurchaseOperation {
                 e.printStackTrace();
             }
 
-            purchaseRequests.forEach(System.out::println);
             List<String> outOfStockErrors = StockValidation(purchaseRequests);
 
             if (!outOfStockErrors.isEmpty()) {
-                throw new OutOfStockException(outOfStockErrors.toString());
+                throw new OutOfStockException(String.join("\n", outOfStockErrors));
             }
 
             newPurchase.add(

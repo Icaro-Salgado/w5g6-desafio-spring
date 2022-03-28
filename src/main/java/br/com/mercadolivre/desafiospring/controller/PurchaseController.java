@@ -27,7 +27,7 @@ public class PurchaseController {
     @PostMapping
     public ResponseEntity<List<PurchaseDTO>> purchaseRequest(
             @RequestBody PurchaseRequestDTO purchase
-    ) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists, OutOfStockException, NoSuchMethodException {
+    ) throws DataBaseWriteException, DataBaseReadException, DBEntryAlreadyExists, OutOfStockException {
 
         List<Purchase> requestFromPurchases = purchaseService.addPurchaseFromRequest(purchase.dtoToModel());
 
